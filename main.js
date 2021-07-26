@@ -11,7 +11,7 @@ const vh = Math.max(
 const MB_TOKEN =
   "pk.eyJ1IjoiY2FyZGVybmUiLCJhIjoiY2puMXN5cnBtNG53NDN2bnhlZ3h4b3RqcCJ9.eNjrtezXwvM7Ho1VSxo06w";
 const MB_STYLE =
-  "mapbox://styles/carderne/ckrjgvfbr8auv19nzc3fir8p9?fresh=true";
+  "mapbox://styles/carderne/ckrjgvfbr8auv19nzc3fir8p9";
 
 const chartTitle = get("chart-title");
 const dateSelect = get("date");
@@ -35,6 +35,7 @@ const checkBoxes = {
   "check-res": ["res-fill", "res-line", "res-name"],
   "check-basins": ["basins", "basins-down"],
   "check-aqueduct": ["aqueduct"],
+  "check-precip": ["precip"],
 };
 Object.entries(checkBoxes).forEach(([key, layers]) => {
   get(key).onchange = (e) => {
@@ -50,7 +51,7 @@ let map = new mapboxgl.Map({
   fitBoundsOptions: {
     padding: { top: 10, bottom: vh * 0.5, left: 10, right: 10 },
   },
-  maxBounds: [73, 9, 79, 15],
+  maxBounds: [71, 7, 84, 17],
   minZoom: 7,
   maxZoom: 11,
 });
