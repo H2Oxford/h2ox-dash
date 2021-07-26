@@ -138,4 +138,4 @@ let pred = [
   { x: new Date("2019-01-05"), y: 7 },
   { x: new Date("2019-01-06"), y: 13 },
 ];
-makeChart(hist, pred);
+makeChart(hemavathy_historic, pred);
