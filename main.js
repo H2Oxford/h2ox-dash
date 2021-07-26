@@ -88,8 +88,9 @@ const handleClick = (e) => {
 let chart;
 Chart.defaults.font.size = 16;
 const makeChart = (data) => {
+  console.log(data);
   let hist = data.historic;
-  let fore = data.predicted;
+  let fore = data.forecast;
 
   let datasets = [
     {

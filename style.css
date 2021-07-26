@@ -23,6 +23,10 @@ html, body {
     margin: 0 auto;
 }
 
+#date {
+    padding: 1rem;
+}
+
 #controls > div > * {
     width: 90%;
     display: inline-block;
