@@ -36,13 +36,22 @@ html, body {
     border-radius: 5px;
 }
 
-#chartCont {
+#outer-chart-container {
     position: absolute;
     height: 40vh;
     width: 90vw;
     left: 5vw;
     bottom: 5vh;
     background: rgba(255, 255, 255, 0.8);
+}
+
+#chart-container {
+    height: 80%;
+}
+
+#chart-title {
+    padding: 1rem;
+    font-size: 1.4rem;
 }
 
 @media only screen and (max-width: 600px) {

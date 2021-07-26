@@ -1,6 +1,6 @@
 /* global mapboxgl Chart historic forecast */
 
-//const get = document.getElementById.bind(document);
+const get = document.getElementById.bind(document);
 //const queryAll = document.querySelectorAll.bind(document);
 
 const vh = Math.max(
@@ -36,9 +36,29 @@ map.addControl(
 );
 map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
 
-const makeChart = (hist, pred) => {
-  let chart;
+map.on("load", () => {
+  map.on("mouseenter", "res-fill", () => {
+    map.getCanvas().style.cursor = "pointer";
+  });
 
+  map.on("mouseleave", "res-fill", () => {
+    map.getCanvas().style.cursor = "";
+  });
+
+  map.on("click", "res-fill", handleClick);
+});
+
+const handleClick = (e) => {
+  e.preventDefault();
+  const name = e.features[0].properties.DAM_NAME;
+  get("chart-title").innerText = name;
+  const nameSimple = name.split(" ")[0].toLowerCase();
+  console.log(name);
+  makeChart(historic[nameSimple], forecast[nameSimple]["2020-01-01"]);
+};
+
+let chart;
+const makeChart = (hist, pred) => {
   let datasets = [
     {
       label: "Historic",
@@ -97,6 +117,8 @@ const makeChart = (hist, pred) => {
             },
           },
           y: {
+            suggestedMin: 0,
+            suggestedMax: 50,
             gridLines: {
               drawBorder: false,
               lineWidth: 2,
@@ -104,9 +126,6 @@ const makeChart = (hist, pred) => {
             },
             ticks: {
               fontSize: 16,
-              beginAtZero: true,
-              maxTicksLimit: 8,
-              stepSize: 30,
             },
           },
         },
