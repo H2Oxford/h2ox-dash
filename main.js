@@ -10,8 +10,7 @@ const vh = Math.max(
 
 const MB_TOKEN =
   "pk.eyJ1IjoiY2FyZGVybmUiLCJhIjoiY2puMXN5cnBtNG53NDN2bnhlZ3h4b3RqcCJ9.eNjrtezXwvM7Ho1VSxo06w";
-const MB_STYLE =
-  "mapbox://styles/carderne/ckrjgvfbr8auv19nzc3fir8p9";
+const MB_STYLE = "mapbox://styles/carderne/ckrjgvfbr8auv19nzc3fir8p9";
 
 const chartTitle = get("chart-title");
 const dateSelect = get("date");
@@ -88,6 +87,7 @@ const handleClick = (e) => {
 };
 
 let chart;
+Chart.defaults.font.size = 16;
 const makeChart = () => {
   let hist = historic[dam];
   let fore = forecast[dam][date];
@@ -146,6 +146,10 @@ const makeChart = () => {
             },
           },
           y: {
+            title: {
+              display: true,
+              text: "Reservoir capacity (TMC)",
+            },
             suggestedMin: 0,
             suggestedMax: 50,
             gridLines: {
