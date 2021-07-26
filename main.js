@@ -25,11 +25,28 @@ const setDate = (e) => {
 };
 dateSelect.onchange = setDate;
 
+const setLayerVis = (e, layers) => {
+  const vis = e.target.checked ? "visible" : "none";
+  layers.forEach((lay) => {
+    map.setLayoutProperty(lay, "visibility", vis);
+  });
+};
+const checkBoxes = {
+  "check-res": ["res-fill", "res-line", "res-name"],
+  "check-basins": ["basins", "basins-down"],
+  "check-aqueduct": ["aqueduct"],
+};
+Object.entries(checkBoxes).forEach(([key, layers]) => {
+  get(key).onchange = (e) => {
+    setLayerVis(e, layers);
+  };
+});
+
 mapboxgl.accessToken = MB_TOKEN;
 let map = new mapboxgl.Map({
   container: "map",
   style: MB_STYLE,
-  bounds: [75.7, 11.8, 76.7, 13.0], // bbox is in order west, south, east, north
+  bounds: [75.7, 11.8, 76.7, 13.4], // bbox is in order west, south, east, north
   fitBoundsOptions: {
     padding: { top: 10, bottom: vh * 0.5, left: 10, right: 10 },
   },

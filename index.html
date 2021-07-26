@@ -16,17 +16,44 @@
         <script src="vendor/chart.js"></script>
         <script src="vendor/moment.js"></script>
         <script src="vendor/chartjs-adapter-moment.js"></script>
+        <link href="vendor/tailwind.css" rel="stylesheet"/>
         <link href="style.css" rel="stylesheet"/>
     </head>
     <body>
         <div id="map"></div>
         <div id="controls">
             <div>
-                <p><strong>H2Ox</strong></p>
+                <h2>H2Ox</h2>
             </div>
             <div>
                 <p>India water reservoir dashboard</p>
-                <p>Click on a reservoir to get its forecast!</p>
+                <p><strong>Click on a reservoir to get its forecast!</strong></p>
+            </div>
+        </div>
+        <div id="layers">
+            <div>
+                <h2>Layers</h2>
+            </div>
+            <div>
+                <div>
+                    <input type="checkbox" id="check-res" checked>
+                    <span class="inline-block w-4 h-4 mb-1 align-middle mr-4 rounded" style="background-color:#0ee1e1;border-color:#0707e4;border-width:2px;"></span>
+                    <span class="align-middle">Reservoirs</span>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <input type="checkbox" id="check-basins" checked>
+                    <span class="inline-block w-4 h-1 mb-1 align-middle mr-4 rounded" style="background-color: #b220c5;"></span>
+                    <span class="align-middle">Basins and runoff</span>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <input type="checkbox" id="check-aqueduct" checked>
+                    <span class="inline-block w-4 h-4 mb-1 align-middle mr-4 rounded" style="background-color:#fdcc8a;"></span>
+                    <span class="align-middle">Aqueduct baseline risk</span>
+                </div>
             </div>
         </div>
         <div id="outer-chart-container">
