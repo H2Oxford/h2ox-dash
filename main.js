@@ -177,7 +177,9 @@ const makeChart = (data) => {
 };
 
 const loadData = () => {
-  let url = new URL("http://h2ox-api.herokuapo.com/api/");
+  const url = window.location.href.includes("h2ox")
+    ? new URL("https://h2ox-api.herokuapo.com/api/")
+    : new URL("http://localhost:5000/api/");
   let username = "wave2web";
   let password = "climateemergency";
   url.searchParams.append("reservoir", dam);
