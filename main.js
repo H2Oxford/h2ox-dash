@@ -1,4 +1,4 @@
-/* global mapboxgl Chart */
+/* global mapboxgl Chart historic forecast */
 
 //const get = document.getElementById.bind(document);
 //const queryAll = document.querySelectorAll.bind(document);
@@ -41,7 +41,7 @@ const makeChart = (hist, pred) => {
 
   let datasets = [
     {
-      label: "hist",
+      label: "Historic",
       data: hist,
       lineTension: 0.3,
       borderColor: "rgba(57, 162, 174, 1)",
@@ -56,7 +56,7 @@ const makeChart = (hist, pred) => {
       },
     },
     {
-      label: "pred",
+      label: "Forecast",
       data: pred,
       lineTension: 0.3,
       borderColor: "rgba(157, 62, 174, 1)",
@@ -88,7 +88,7 @@ const makeChart = (hist, pred) => {
             },
             type: "time",
             time: {
-              unit: "day",
+              unit: "month",
               minUnit: "day",
               stepSize: 1,
             },
@@ -128,14 +128,4 @@ const makeChart = (hist, pred) => {
   }
 };
 
-let hist = [
-  { x: new Date("2019-01-01"), y: 10 },
-  { x: new Date("2019-01-02"), y: 12 },
-  { x: new Date("2019-01-03"), y: 14 },
-];
-let pred = [
-  { x: new Date("2019-01-04"), y: 9 },
-  { x: new Date("2019-01-05"), y: 7 },
-  { x: new Date("2019-01-06"), y: 13 },
-];
-makeChart(hemavathy_historic, pred);
+makeChart(historic.kabini, forecast.kabini["2020-01-01"]);
