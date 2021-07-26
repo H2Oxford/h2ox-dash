@@ -81,14 +81,12 @@ const handleClick = (e) => {
   const name = e.features[0].properties.DAM_NAME;
   chartTitle.innerText = name;
   dam = name.split(" ")[0].toLowerCase();
-  console.log(name);
   loadData();
 };
 
 let chart;
 Chart.defaults.font.size = 16;
 const makeChart = (data) => {
-  console.log(data);
   let hist = data.historic;
   let fore = data.forecast;
 
@@ -188,7 +186,9 @@ const loadData = () => {
   let headers = new Headers();
   headers.set("Authorization", "Basic " + btoa(username + ":" + password));
 
-  fetch(url, {
+  console.log(url);
+
+  fetch("https://h2ox-api.herokuapp.com/api/?reservoir=kabini&date=2019-01-01", {
     method: "GET",
     headers: headers,
   })
