@@ -55,14 +55,6 @@ let map = new mapboxgl.Map({
 });
 map.dragRotate.disable();
 map.touchZoomRotate.disableRotation();
-map.addControl(
-  new mapboxgl.ScaleControl({
-    maxWidth: 200,
-    unit: "metric",
-  }),
-  "bottom-right"
-);
-map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
 
 map.on("load", () => {
   map.on("mouseenter", "res-fill", () => {
