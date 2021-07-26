@@ -175,20 +175,20 @@ const makeChart = (data) => {
 };
 
 const loadData = () => {
-  const url = window.location.href.includes("h2ox")
-    ? new URL("https://h2ox-api.herokuapo.com/api/")
-    : new URL("http://localhost:5000/api/");
-  let username = "wave2web";
-  let password = "climateemergency";
-  url.searchParams.append("reservoir", dam);
-  url.searchParams.append("date", date);
+  let url = window.location.href.includes("h2ox")
+    ? "https://h2ox-api.herokuapp.com/api/"
+    : "http://localhost:5000/api/";
+  url += `?reservoir=${dam}&date=${date}`;
 
   let headers = new Headers();
-  headers.set("Authorization", "Basic " + btoa(username + ":" + password));
+  headers.set(
+    "Authorization",
+    "Basic " + btoa("wave2web" + ":" + "climateemergency")
+  );
 
   console.log(url);
 
-  fetch("https://h2ox-api.herokuapp.com/api/?reservoir=kabini&date=2019-01-01", {
+  fetch(url, {
     method: "GET",
     headers: headers,
   })
