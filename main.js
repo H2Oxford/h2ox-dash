@@ -72,42 +72,34 @@ const handleClick = (e) => {
 let chart;
 const makeChart = () => {
   let hist = historic[dam];
-  const fore = forecast[dam][date];
+  let fore = forecast[dam][date];
 
-  const firstHist = "2019-01-01";
-  const lastHist = fore[0].x;
-  hist = hist.filter((it) => it.x >= firstHist && it.x < lastHist);
+  hist = hist.filter(
+    (it) => it.x >= "2019-01-01" && it.x < fore[fore.length - 1].x
+  );
 
   let datasets = [
     {
-      label: "Historic",
-      data: hist,
-      lineTension: 0.3,
-      borderColor: "rgba(57, 162, 174, 1)",
-      backgroundColor: "rgba(57, 162, 174, 0.2)",
-      borderCapStyle: "round",
-      borderWidth: 4,
-      pointBorderWidth: 0,
-      pointBackgroundColor: "rgba(0, 0, 0, 0)",
-      pointBorderColor: "rgba(0, 0, 0, 0)",
-      datalabels: {
-        display: false,
-      },
-    },
-    {
       label: "Forecast",
       data: fore,
+      fill: true,
       lineTension: 0.3,
       borderColor: "rgba(157, 62, 174, 1)",
       backgroundColor: "rgba(157, 62, 174, 0.2)",
       borderCapStyle: "round",
-      borderWidth: 10,
       pointBorderWidth: 0,
-      pointBackgroundColor: "rgba(0, 0, 0, 0)",
-      pointBorderColor: "rgba(0, 0, 0, 0)",
-      datalabels: {
-        display: false,
-      },
+      borderWidth: 8,
+    },
+    {
+      label: "Historic",
+      data: hist,
+      fill: true,
+      lineTension: 0.3,
+      borderColor: "rgba(57, 162, 174, 1)",
+      backgroundColor: "rgba(57, 162, 174, 0.2)",
+      borderCapStyle: "round",
+      pointBorderWidth: 0,
+      borderWidth: 4,
     },
   ];
 
