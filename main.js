@@ -1,7 +1,6 @@
-/* global mapboxgl Chart historic forecast */
+/* global mapboxgl Chart */
 
 const get = document.getElementById.bind(document);
-//const queryAll = document.querySelectorAll.bind(document);
 
 const vh = Math.max(
   document.documentElement.clientHeight,
@@ -20,7 +19,7 @@ let date = "2020-01-01";
 
 const setDate = (e) => {
   date = e.target.value;
-  makeChart(dam, date);
+  loadData();
 };
 dateSelect.onchange = setDate;
 
@@ -83,18 +82,14 @@ const handleClick = (e) => {
   chartTitle.innerText = name;
   dam = name.split(" ")[0].toLowerCase();
   console.log(name);
-  makeChart();
+  loadData();
 };
 
 let chart;
 Chart.defaults.font.size = 16;
-const makeChart = () => {
-  let hist = historic[dam];
-  let fore = forecast[dam][date];
-
-  hist = hist.filter(
-    (it) => it.x >= "2019-01-01" && it.x < fore[fore.length - 1].x
-  );
+const makeChart = (data) => {
+  let hist = data.historic;
+  let fore = data.predicted;
 
   let datasets = [
     {
@@ -180,4 +175,23 @@ const makeChart = () => {
   }
 };
 
-makeChart(dam, date);
+const loadData = () => {
+  //let url = new URL("http://h2ox-api.herokuapo.com/api/");
+  let url = new URL("http://127.0.0.1:5000/api/");
+  let username = "wave2web";
+  let password = "climateemergency";
+  url.searchParams.append("reservoir", dam);
+  url.searchParams.append("date", date);
+
+  let headers = new Headers();
+  headers.set("Authorization", "Basic " + btoa(username + ":" + password));
+
+  fetch(url, {
+    method: "GET",
+    headers: headers,
+  })
+    .then((response) => response.json())
+    .then((data) => makeChart(data));
+};
+
+loadData();
