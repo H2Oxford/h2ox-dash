@@ -91,4 +91,8 @@ html, body {
     #controls > div {
         display: flex;
     }
+
+    #layers {
+        display: none;
+    }
 }
