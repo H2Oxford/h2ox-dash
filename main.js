@@ -13,6 +13,18 @@ const MB_TOKEN =
 const MB_STYLE =
   "mapbox://styles/carderne/ckrjgvfbr8auv19nzc3fir8p9?fresh=true";
 
+const chartTitle = get("chart-title");
+const dateSelect = get("date");
+
+let dam = "kabini";
+let date = "2020-01-01";
+
+const setDate = (e) => {
+  date = e.target.value;
+  makeChart(dam, date);
+};
+dateSelect.onchange = setDate;
+
 mapboxgl.accessToken = MB_TOKEN;
 let map = new mapboxgl.Map({
   container: "map",
@@ -51,14 +63,21 @@ map.on("load", () => {
 const handleClick = (e) => {
   e.preventDefault();
   const name = e.features[0].properties.DAM_NAME;
-  get("chart-title").innerText = name;
-  const nameSimple = name.split(" ")[0].toLowerCase();
+  chartTitle.innerText = name;
+  dam = name.split(" ")[0].toLowerCase();
   console.log(name);
-  makeChart(historic[nameSimple], forecast[nameSimple]["2020-01-01"]);
+  makeChart();
 };
 
 let chart;
-const makeChart = (hist, pred) => {
+const makeChart = () => {
+  let hist = historic[dam];
+  const fore = forecast[dam][date];
+
+  const firstHist = "2019-01-01";
+  const lastHist = fore[0].x;
+  hist = hist.filter((it) => it.x >= firstHist && it.x < lastHist);
+
   let datasets = [
     {
       label: "Historic",
@@ -77,12 +96,12 @@ const makeChart = (hist, pred) => {
     },
     {
       label: "Forecast",
-      data: pred,
+      data: fore,
       lineTension: 0.3,
       borderColor: "rgba(157, 62, 174, 1)",
       backgroundColor: "rgba(157, 62, 174, 0.2)",
       borderCapStyle: "round",
-      borderWidth: 4,
+      borderWidth: 10,
       pointBorderWidth: 0,
       pointBackgroundColor: "rgba(0, 0, 0, 0)",
       pointBorderColor: "rgba(0, 0, 0, 0)",
@@ -147,4 +166,4 @@ const makeChart = (hist, pred) => {
   }
 };
 
-makeChart(historic.kabini, forecast.kabini["2020-01-01"]);
+makeChart(dam, date);
