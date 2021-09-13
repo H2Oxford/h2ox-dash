@@ -140,6 +140,11 @@ const makeChart = (data) => {
       type: "line",
       data: { datasets: datasets },
       options: {
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
         scales: {
           x: {
             gridLines: {
