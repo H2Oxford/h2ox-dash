@@ -21,12 +21,10 @@
         <link href="style.css" rel="stylesheet"/>
     </head>
     <body>
-        <div class="sidebar"> <!-- Sidebar -->
-            <div id="controls">
+        <div class="sidebar flex-shrink w-1/6 h-screen"> <!-- Sidebar -->
+            <div class="controls">
                 <div>
-                    <div style="background-color:#F0AB00">
-                        <h2>H2Ox</h2>
-                    </div>
+                    <h2 class="heading">H2Ox water dashboard</h2>
                     <p>India water reservoir dashboard</p>
                 </div>
                 <div>
@@ -34,19 +32,60 @@
                     <p>Choose the starting date of the forecast above the chart</p>
                 </div>
             </div>
-            <div id="warnings">
+            <div class="warnings">
                 <div>
-                    <h2>Warnings</h2>
+                    <h2 class="heading">Summary</h2>
                     <p>Quick summary for each reservoir</p>
                 </div>
                 <div>
-                    <p>Lorem</p>
+                    <div class="res">
+                        <div id="but-kri">Krisharaja Sagar</div>
+                        <div class="level">
+                            <div id="lev-kri">56</div>
+                            <div id="dir-kri">↑</div>
+                        </div>
+                    </div>
+                    <div class="res">
+                        <div id="but-har">Harangi</div>
+                        <div class="level">
+                            <div id="lev-har">56</div>
+                            <div id="dir-har">↑</div>
+                        </div>
+                    </div>
+                    <div class="res">
+                        <div id="but-hem">Hemavathy</div>
+                        <div class="level">
+                            <div id="lev-hem">56</div>
+                            <div id="dir-hem">↑</div>
+                        </div>
+                    </div>
+                    <div class="res">
+                        <div id="but-kab">Kabini</div>
+                        <div class="level">
+                            <div id="lev-kab">56</div>
+                            <div id="dir-kab">↑</div>
+                        </div>
+                    </div>
+                    <div class="res">
+                        <div id="but-bha">Bhadra</div>
+                        <div class="level">
+                            <div id="lev-bha"></div>
+                            <div id="dir-bha"></div>
+                        </div>
+                    </div>
+                    <div class="res">
+                        <div id="but-low">Lower Bhawani</div>
+                        <div class="level">
+                            <div id="lev-low"></div>
+                            <div id="dir-low"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="main"> <!-- Main container -->
-            <div id="map"></div>
+        <div class="main flex flex-col flex-grow"> <!-- Main container -->
+            <div id="map" class="h-1/2"></div>
             <div id="layers"> <!-- Legend -->
                 <div>
                     <h2>Layers</h2>
@@ -61,7 +100,7 @@
                 <div>
                     <div>
                         <input type="checkbox" id="check-riv" checked>
-                        <span class="inline-block w-4 h-1 mb-1 align-middle mr-4 rounded" style="background-color:#0ee1e1;"></span>
+                        <span class="inline-block w-4 h-1 mb-1 align-middle mr-4 rounded" style="background-color:#061e99;"></span>
                         <span class="align-middle">Rivers</span>
                     </div>
                 </div>
@@ -97,13 +136,13 @@
                     <div>
                         <input type="checkbox" id="check-canal">
                         <span class="inline-block w-4 h-1 mb-1 align-middle mr-4 rounded" style="background-color: #195700;"></span>
-                        <span class="align-middle">Bengaluru water supply</span>
+                        <span class="align-middle">Bengaluru canal</span>
                     </div>
                 </div>
             </div>
             <div id="outer-chart-container">
                 <div>
-                    <span id="chart-title">Kabini</span>
+                    <span>Reservoir:<span id="chart-title">Kabini</span></span>
                     <input type="date" id="date" value="2020-01-01" min="2012-01-01" max="2020-07-01">
                 </div>
                 <div id="chart-container">

@@ -2,14 +2,10 @@
 
 const get = document.getElementById.bind(document);
 
-const vh = Math.max(
-  document.documentElement.clientHeight,
-  window.innerHeight || 0
-);
-
 const MB_TOKEN =
   "pk.eyJ1IjoiY2FyZGVybmUiLCJhIjoiY2puMXN5cnBtNG53NDN2bnhlZ3h4b3RqcCJ9.eNjrtezXwvM7Ho1VSxo06w";
-const MB_STYLE = "mapbox://styles/carderne/ckrjgvfbr8auv19nzc3fir8p9?fresh=true";
+const MB_STYLE =
+  "mapbox://styles/carderne/ckrjgvfbr8auv19nzc3fir8p9?fresh=true";
 
 const chartTitle = get("chart-title");
 const dateSelect = get("date");
@@ -19,7 +15,7 @@ let date = "2020-01-01";
 
 const setDate = (e) => {
   date = e.target.value;
-  loadData();
+  loadData(makeChart);
 };
 dateSelect.onchange = setDate;
 
@@ -36,7 +32,7 @@ const checkBoxes = {
   "check-aqueduct": ["aqueduct"],
   "check-precip": ["precip"],
   "check-benga": ["bengaluru"],
-  "check-canal": ["canal-line", "canal-name"],
+  "check-canal": ["canal-line"],
 };
 Object.entries(checkBoxes).forEach(([key, layers]) => {
   get(key).onchange = (e) => {
@@ -44,16 +40,22 @@ Object.entries(checkBoxes).forEach(([key, layers]) => {
   };
 });
 
+const reservoirs = [
+  "Krisharaja Sagar",
+  "Harangi",
+  "Hemavathy",
+  "Kabini",
+  "Bhadra",
+  "Lower Bhawani",
+];
+
 mapboxgl.accessToken = MB_TOKEN;
 let map = new mapboxgl.Map({
   container: "map",
   style: MB_STYLE,
-  bounds: [75.7, 11.8, 76.7, 13.4], // bbox is in order west, south, east, north
-  fitBoundsOptions: {
-    padding: { top: 10, bottom: vh * 0.5, left: 10, right: 10 },
-  },
-  maxBounds: [71, 7, 84, 17],
-  minZoom: 7,
+  bounds: [73.94, 11.18, 83.35, 14.04], // bbox is in order west, south, east, north
+  maxBounds: [71, 7, 86, 17],
+  minZoom: 5,
   maxZoom: 11,
 });
 map.dragRotate.disable();
@@ -76,7 +78,7 @@ const handleClick = (e) => {
   const name = e.features[0].properties.DAM_NAME;
   chartTitle.innerText = name;
   dam = name.split(" ")[0].toLowerCase();
-  loadData();
+  loadData(makeChart);
 };
 
 let chart;
@@ -169,12 +171,13 @@ const makeChart = (data) => {
   }
 };
 
-const loadData = () => {
+const loadData = (fn, parDam = null, parDate = null, history = 180) => {
   const url = window.location.href.includes("h2ox")
     ? new URL("https://h2ox-api.herokuapp.com/api/")
     : new URL("http://localhost:5000/api/");
-  url.searchParams.append("reservoir", dam);
-  url.searchParams.append("date", date);
+  url.searchParams.append("reservoir", parDam || dam);
+  url.searchParams.append("date", parDate || date);
+  url.searchParams.append("history", history);
 
   let headers = new Headers();
   let username = "wave2web";
@@ -186,7 +189,41 @@ const loadData = () => {
     headers: headers,
   })
     .then((response) => response.json())
-    .then((data) => makeChart(data));
+    .then((data) => fn(data, parDam));
 };
 
-loadData();
+loadData(makeChart);
+
+const handleButClick = (e) => {
+  e.preventDefault();
+  const name = e.target.innerText;
+  chartTitle.innerText = name;
+  dam = name.split(" ")[0].toLowerCase();
+  loadData(makeChart);
+};
+
+const latest = (data, name) => {
+  const max = data.historic.reduce(
+    (prev, next) => (prev.y > next.y ? prev.y : next.y),
+    0
+  );
+  console.log(name);
+  console.log(data);
+  console.log(max);
+  const level = data.historic.slice(-1)[0].y;
+  const fut = data.forecast.slice(-1)[0].y;
+  const arrow = fut > level ? "↑" : "↓";
+  const code = name.slice(0, 3);
+  const lev = get("lev-" + code);
+  lev.innerText = level;
+  const color = level > max * 0.5 ? "green" : "red";
+  lev.style = "color:" + color;
+  get("dir-" + code).innerText = arrow;
+};
+
+reservoirs.forEach((res) => {
+  const name = res.split(" ")[0].toLowerCase();
+  const code = name.slice(0, 3);
+  get("but-" + code).onclick = handleButClick;
+  loadData(latest, name, "2020-07-01", 3000);
+});

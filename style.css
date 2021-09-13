@@ -10,40 +10,27 @@ body {
     max-width: 100vw;
 }
 
-#map {
-    height: 50vh;
-}
-
 .sidebar {
-    width: 300px;
     background-color: #d5e4b1;
 }
 
-.main {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-}
-
-.sidebar > div {
-    padding: 10px;
-}
-
-.sidebar > div > div {
-    justify-content: center;
-    margin: 0 auto;
+.heading {
+    width: 100%;
+    background-color: #F0AB00;
 }
 
 #date {
     padding: 1rem;
 }
 
-#controls > div > * {
-    width: 90%;
-    display: inline-block;
+.sidebar > div > div > * {
     margin: 5px auto;
+    margin-top: 0;
     padding: 5px;
-    border-radius: 5px;
+}
+
+.warnings {
+    margin-top: 30px;
 }
 
 #layers {
@@ -68,6 +55,19 @@ body {
 #chart-title {
     padding: 1rem;
     font-size: 1.4rem;
+}
+
+.res {
+    cursor: pointer;
+    border-width: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.level {
+    display: flex;
+    flex-direction: row;
+    font-size: 20px;
 }
 
 @media only screen and (max-width: 600px) {
