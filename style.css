@@ -85,11 +85,20 @@ body {
     html, body {
         font: 0.9em arial;
     }
+    body {
+        flex-direction: column;
+    }
     #controls {
         top: 0;
         left: 0;
         max-width: 100%;
         padding: 5px;
+    }
+
+    .sidebar {
+        width: 100vw;
+        flex-grow: 1;
+        height: initial;
     }
 
     #controls > div > * {
@@ -102,6 +111,10 @@ body {
 
     #controls > div {
         display: flex;
+    }
+
+    #map {
+        height: 40vh;
     }
 
     #layers {
