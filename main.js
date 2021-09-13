@@ -84,24 +84,47 @@ const handleClick = (e) => {
 let chart;
 Chart.defaults.font.size = 16;
 const makeChart = (data) => {
-  let hist = data.historic;
-  let fore = data.forecast;
-
   let datasets = [
     {
       label: "Forecast",
-      data: fore,
-      fill: true,
+      data: data.forecast,
+      fill: false,
       lineTension: 0.3,
       borderColor: "rgba(157, 62, 174, 1)",
       backgroundColor: "rgba(157, 62, 174, 0.2)",
       borderCapStyle: "round",
       pointBorderWidth: 0,
-      borderWidth: 8,
+      borderWidth: 6,
+    },
+    {
+      label: "Down",
+      data: data.forecastUp,
+      fill: "+1",
+      lineTension: 0.3,
+      borderColor: "rgba(157, 62, 174, 0.2)",
+      backgroundColor: "rgba(157, 62, 174, 0.2)",
+      borderCapStyle: "round",
+      pointBorderWidth: 0,
+      borderWidth: 1,
+      radius: 0,
+      legend: false,
+    },
+    {
+      label: "Up",
+      data: data.forecastDown,
+      fill: false,
+      hidden: false,
+      lineTension: 0.3,
+      borderColor: "rgba(157, 62, 174, 0.2)",
+      backgroundColor: "rgba(157, 62, 174, 0.2)",
+      borderCapStyle: "round",
+      pointBorderWidth: 0,
+      borderWidth: 1,
+      radius: 0,
     },
     {
       label: "Historic",
-      data: hist,
+      data: data.historic,
       fill: true,
       lineTension: 0.3,
       borderColor: "rgba(57, 162, 174, 1)",
@@ -142,7 +165,7 @@ const makeChart = (data) => {
               text: "Reservoir capacity (TMC)",
             },
             suggestedMin: 0,
-            suggestedMax: 50,
+            //suggestedMax: 50,
             gridLines: {
               drawBorder: false,
               lineWidth: 2,
@@ -203,22 +226,21 @@ const handleButClick = (e) => {
 };
 
 const latest = (data, name) => {
-  const max = data.historic.reduce(
-    (prev, next) => (prev.y > next.y ? prev.y : next.y),
-    0
-  );
-  console.log(name);
-  console.log(data);
-  console.log(max);
-  const level = data.historic.slice(-1)[0].y;
-  const fut = data.forecast.slice(-1)[0].y;
-  const arrow = fut > level ? "↑" : "↓";
-  const code = name.slice(0, 3);
-  const lev = get("lev-" + code);
-  lev.innerText = level;
-  const color = level > max * 0.5 ? "green" : "red";
-  lev.style = "color:" + color;
-  get("dir-" + code).innerText = arrow;
+  if (data.historic) {
+    const max = data.historic.reduce(
+      (prev, next) => (prev.y > next.y ? prev.y : next.y),
+      0
+    );
+    const level = data.historic.slice(-1)[0].y;
+    const fut = data.forecast.slice(-1)[0].y;
+    const arrow = fut > level ? "↑" : "↓";
+    const code = name.slice(0, 3);
+    const lev = get("lev-" + code);
+    lev.innerText = level;
+    const color = level > max * 0.5 ? "green" : "red";
+    lev.style = "color:" + color;
+    get("dir-" + code).innerText = arrow;
+  }
 };
 
 reservoirs.forEach((res) => {
