@@ -58,16 +58,27 @@ body {
 }
 
 .res {
-    cursor: pointer;
     border-width: 5px;
     display: flex;
     flex-direction: column;
 }
 
+.res > div:first-child {
+    cursor: pointer;
+}
+
+.res:hover {
+    background-color: #bfcd9f;
+}
+
 .level {
     display: flex;
     flex-direction: row;
-    font-size: 20px;
+    font-size: 30px;
+}
+
+.arrow {
+    margin-left: 10px;
 }
 
 @media only screen and (max-width: 600px) {

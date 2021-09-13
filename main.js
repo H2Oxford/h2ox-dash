@@ -165,7 +165,6 @@ const makeChart = (data) => {
               text: "Reservoir capacity (TMC)",
             },
             suggestedMin: 0,
-            //suggestedMax: 50,
             gridLines: {
               drawBorder: false,
               lineWidth: 2,
@@ -215,8 +214,6 @@ const loadData = (fn, parDam = null, parDate = null, history = 180) => {
     .then((data) => fn(data, parDam));
 };
 
-loadData(makeChart);
-
 const handleButClick = (e) => {
   e.preventDefault();
   const name = e.target.innerText;
@@ -233,19 +230,22 @@ const latest = (data, name) => {
     );
     const level = data.historic.slice(-1)[0].y;
     const fut = data.forecast.slice(-1)[0].y;
-    const arrow = fut > level ? "↑" : "↓";
+
     const code = name.slice(0, 3);
-    const lev = get("lev-" + code);
-    lev.innerText = level;
-    const color = level > max * 0.5 ? "green" : "red";
-    lev.style = "color:" + color;
-    get("dir-" + code).innerText = arrow;
+    const divlev = get("lev-" + code);
+    const divarr = get("dir-" + code);
+
+    divlev.innerText = level;
+    divlev.style = "color:" + (level > max * 0.5 ? "green" : "red");
+    divarr.innerText = fut > level ? "↑" : "↓";
+    divarr.style = "color:" + (fut > level ? "green" : "red");
   }
 };
 
+loadData(makeChart);
 reservoirs.forEach((res) => {
   const name = res.split(" ")[0].toLowerCase();
   const code = name.slice(0, 3);
   get("but-" + code).onclick = handleButClick;
-  loadData(latest, name, "2020-07-01", 3000);
+  loadData(latest, name, "2020-01-01", 3000);
 });
