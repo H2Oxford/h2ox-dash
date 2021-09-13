@@ -9,7 +9,7 @@ const vh = Math.max(
 
 const MB_TOKEN =
   "pk.eyJ1IjoiY2FyZGVybmUiLCJhIjoiY2puMXN5cnBtNG53NDN2bnhlZ3h4b3RqcCJ9.eNjrtezXwvM7Ho1VSxo06w";
-const MB_STYLE = "mapbox://styles/carderne/ckrjgvfbr8auv19nzc3fir8p9";
+const MB_STYLE = "mapbox://styles/carderne/ckrjgvfbr8auv19nzc3fir8p9?fresh=true";
 
 const chartTitle = get("chart-title");
 const dateSelect = get("date");
@@ -31,9 +31,12 @@ const setLayerVis = (e, layers) => {
 };
 const checkBoxes = {
   "check-res": ["res-fill", "res-line", "res-name"],
-  "check-basins": ["basins", "basins-down"],
+  "check-riv": ["rivers"],
+  "check-basins": ["basins"],
   "check-aqueduct": ["aqueduct"],
   "check-precip": ["precip"],
+  "check-benga": ["bengaluru"],
+  "check-canal": ["canal-line", "canal-name"],
 };
 Object.entries(checkBoxes).forEach(([key, layers]) => {
   get(key).onchange = (e) => {
