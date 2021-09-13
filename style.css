@@ -3,22 +3,33 @@ html, body {
     margin: 0;
 }
 
-#map {
+body {
+    display: flex;
+    flex-direction: row;
     width: 100vw;
-    height: 100vh;
+    max-width: 100vw;
 }
 
-#controls {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    max-width: 240px;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.8);
+#map {
+    height: 50vh;
+}
+
+.sidebar {
+    width: 300px;
+    background-color: #d5e4b1;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.sidebar > div {
     padding: 10px;
 }
 
-#controls > div {
+.sidebar > div > div {
     justify-content: center;
     margin: 0 auto;
 }
@@ -44,23 +55,9 @@ html, body {
     background: rgba(255, 255, 255, 0.8);
     padding: 10px;
 }
-#controls {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    max-width: 240px;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 10px;
-}
 
 #outer-chart-container {
-    position: absolute;
-    height: 40vh;
-    width: 90vw;
-    left: 5vw;
-    bottom: 5vh;
-    background: rgba(255, 255, 255, 0.8);
+    height: 50vh;
     padding: 1em;
 }
 

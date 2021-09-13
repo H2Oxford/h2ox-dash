@@ -21,80 +21,95 @@
         <link href="style.css" rel="stylesheet"/>
     </head>
     <body>
-        <div id="map"></div>
-        <div id="controls">
-            <div>
-                <h2>H2Ox</h2>
-                <p>India water reservoir dashboard</p>
-            </div>
-            <div>
-                <p><strong>Click on a reservoir to get its forecast!</strong></p>
-                <p>Choose the starting date of the forecast above the chart</p>
-            </div>
-        </div>
-        <div id="layers">
-            <div>
-                <h2>Layers</h2>
-            </div>
-            <div>
+        <div class="sidebar"> <!-- Sidebar -->
+            <div id="controls">
                 <div>
-                    <input type="checkbox" id="check-res" checked>
-                    <span class="inline-block w-4 h-4 mb-1 align-middle mr-4 rounded" style="background-color:#0ee1e1;border-color:#0707e4;border-width:2px;"></span>
-                    <span class="align-middle">Reservoirs</span>
+                    <div style="background-color:#F0AB00">
+                        <h2>H2Ox</h2>
+                    </div>
+                    <p>India water reservoir dashboard</p>
+                </div>
+                <div>
+                    <p><strong>Click on a reservoir to get its forecast!</strong></p>
+                    <p>Choose the starting date of the forecast above the chart</p>
                 </div>
             </div>
-            <div>
+            <div id="warnings">
                 <div>
-                    <input type="checkbox" id="check-riv" checked>
-                    <span class="inline-block w-4 h-1 mb-1 align-middle mr-4 rounded" style="background-color:#0ee1e1;"></span>
-                    <span class="align-middle">Rivers</span>
+                    <h2>Warnings</h2>
+                    <p>Quick summary for each reservoir</p>
                 </div>
-            </div>
-            <div>
                 <div>
-                    <input type="checkbox" id="check-basins" checked>
-                    <span class="inline-block w-4 h-1 mb-1 align-middle mr-4 rounded" style="background-color: #120514;"></span>
-                    <span class="align-middle">Basins and runoff</span>
-                </div>
-            </div>
-            <div>
-                <div>
-                    <input type="checkbox" id="check-aqueduct">
-                    <span class="inline-block w-4 h-4 mb-1 align-middle mr-4 rounded" style="background-color:#fdcc8a;"></span>
-                    <span class="align-middle">Aqueduct baseline risk</span>
-                </div>
-            </div>
-            <div>
-                <div>
-                    <input type="checkbox" id="check-precip">
-                    <span class="inline-block w-4 h-4 mb-1 align-middle mr-4 rounded" style="background-color:#2b8cbe;"></span>
-                    <span class="align-middle">Mean precipitation</span>
-                </div>
-            </div>
-            <div>
-                <div>
-                    <input type="checkbox" id="check-benga" checked>
-                    <span class="inline-block w-4 h-4 mb-1 align-middle mr-4 rounded" style="background-color:#382323;"></span>
-                    <span class="align-middle">Bengaluru</span>
-                </div>
-            </div>
-            <div>
-                <div>
-                    <input type="checkbox" id="check-canal">
-                    <span class="inline-block w-4 h-1 mb-1 align-middle mr-4 rounded" style="background-color: #195700;"></span>
-                    <span class="align-middle">Bengaluru water supply</span>
+                    <p>Lorem</p>
                 </div>
             </div>
         </div>
-        <div id="outer-chart-container">
-            <div>
-                <span id="chart-title">Kabini</span>
-                <input type="date" id="date" value="2020-01-01" min="2012-01-01" max="2020-07-01">
+
+        <div class="main"> <!-- Main container -->
+            <div id="map"></div>
+            <div id="layers"> <!-- Legend -->
+                <div>
+                    <h2>Layers</h2>
+                </div>
+                <div>
+                    <div>
+                        <input type="checkbox" id="check-res" checked>
+                        <span class="inline-block w-4 h-4 mb-1 align-middle mr-4 rounded" style="background-color:#0ee1e1;border-color:#0707e4;border-width:2px;"></span>
+                        <span class="align-middle">Reservoirs</span>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <input type="checkbox" id="check-riv" checked>
+                        <span class="inline-block w-4 h-1 mb-1 align-middle mr-4 rounded" style="background-color:#0ee1e1;"></span>
+                        <span class="align-middle">Rivers</span>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <input type="checkbox" id="check-basins" checked>
+                        <span class="inline-block w-4 h-1 mb-1 align-middle mr-4 rounded" style="background-color: #120514;"></span>
+                        <span class="align-middle">Basins and runoff</span>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <input type="checkbox" id="check-aqueduct">
+                        <span class="inline-block w-4 h-4 mb-1 align-middle mr-4 rounded" style="background-color:#fdcc8a;"></span>
+                        <span class="align-middle">Aqueduct baseline risk</span>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <input type="checkbox" id="check-precip">
+                        <span class="inline-block w-4 h-4 mb-1 align-middle mr-4 rounded" style="background-color:#2b8cbe;"></span>
+                        <span class="align-middle">Mean precipitation</span>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <input type="checkbox" id="check-benga" checked>
+                        <span class="inline-block w-4 h-4 mb-1 align-middle mr-4 rounded" style="background-color:#382323;"></span>
+                        <span class="align-middle">Bengaluru</span>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <input type="checkbox" id="check-canal">
+                        <span class="inline-block w-4 h-1 mb-1 align-middle mr-4 rounded" style="background-color: #195700;"></span>
+                        <span class="align-middle">Bengaluru water supply</span>
+                    </div>
+                </div>
             </div>
-            <div id="chart-container">
-                <canvas id="chart"></canvas>
+            <div id="outer-chart-container">
+                <div>
+                    <span id="chart-title">Kabini</span>
+                    <input type="date" id="date" value="2020-01-01" min="2012-01-01" max="2020-07-01">
+                </div>
+                <div id="chart-container">
+                    <canvas id="chart"></canvas>
+                </div>
             </div>
-        </div>
-        <script src="main.js"></script>
+            <script src="main.js"></script>
     </body>
 </html>
