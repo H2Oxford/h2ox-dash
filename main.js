@@ -8,9 +8,11 @@ const MB_STYLE =
   "mapbox://styles/carderne/ckrjgvfbr8auv19nzc3fir8p9?fresh=true";
 
 const dateSelect = get("date");
+const historySelect = get("history");
 
 let dam = "krisharaja";
 let date = "2020-01-01";
+let history = 180;
 
 const setDate = (e) => {
   date = e.target.value;
@@ -18,6 +20,12 @@ const setDate = (e) => {
   updateLatest();
 };
 dateSelect.onchange = setDate;
+
+const setHistory = (e) => {
+  history = parseInt(e.target.value);
+  loadData(makeChart);
+};
+historySelect.onchange = setHistory;
 
 const setLayerVis = (e, layers) => {
   const vis = e.target.checked ? "visible" : "none";
@@ -200,13 +208,13 @@ const makeChart = (data) => {
   }
 };
 
-const loadData = (fn, parDam = null, history = 180) => {
+const loadData = (fn, parDam = null, parHistory = null) => {
   const url = window.location.href.includes("h2ox")
     ? new URL("https://h2ox-api.herokuapp.com/api/")
     : new URL("http://localhost:5000/api/");
   url.searchParams.append("reservoir", parDam || dam);
   url.searchParams.append("date", date);
-  url.searchParams.append("history", history);
+  url.searchParams.append("history", parHistory || history);
 
   let headers = new Headers();
   let username = "wave2web";
