@@ -1,4 +1,5 @@
 html, body {
+    background-color: ##f3f4f6;
     font: 1em arial;
     margin: 0;
 }
@@ -8,29 +9,58 @@ body {
     flex-direction: row;
     width: 100vw;
     max-width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
 }
 
 .sidebar {
-    background-color: #d5e4b1;
+    overflow-y: scroll;
+    flex-shrink: 1;
+    width: 20%;
+    height: 100vh;
 }
 
-.heading {
+.warnings {
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+#map {
+    height: 50vh;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
     width: 100%;
-    background-color: #F0AB00;
+    color: #F0AB00;
+    padding: 20px;
 }
 
 #date {
     padding: 1rem;
 }
 
-.sidebar > div > div > * {
+.sidebar > div > div > p {
     margin: 5px auto;
     margin-top: 0;
-    padding: 5px;
+    padding: 0.5rem;
 }
 
-.warnings {
-    margin-top: 30px;
+.date {
+    margin: auto;
+}
+
+.date > input {
+    margin: auto;
+    display: block;
+    background-color: #E2E8F0;
+    border-color: #E2E8F0;
+    border-radius: 10px;
 }
 
 #layers {
@@ -49,36 +79,91 @@ body {
 }
 
 #chart-container {
-    height: 80%;
-}
-
-#chart-title {
-    padding: 1rem;
-    font-size: 1.4rem;
+    height: 100%;
 }
 
 .res {
     border-width: 5px;
     display: flex;
     flex-direction: column;
+
+    cursor: pointer;
+    background-color: #E2E8F0;
+    border-color: #E2E8F0;
+    border-radius: 10px;
+    margin: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
 }
 
 .res > div:first-child {
-    cursor: pointer;
+    font-weight: bold;
+}
+
+.res:last-child {
+    margin-bottom: 0;
+}
+
+.selected {
+    background-color: #abb88f !important;
+    border-color: #abb88f !important;
 }
 
 .res:hover {
     background-color: #bfcd9f;
+    border-color: #bfcd9f;
 }
 
 .level {
     display: flex;
     flex-direction: row;
-    font-size: 30px;
+    font-size: 2rem;
 }
 
 .arrow {
-    margin-left: 10px;
+    float: right;
+    margin-left: auto;
+    margin-right: 1em;
+    font-size: 3rem;
+    line-height: 1rem;
+}
+
+.info {
+    margin: 0.25rem;
+    /*font-size: 0.9rem;*/
+    color: #D97706;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.align-middle {
+    vertical-align: middle;
+}
+
+.w-4 {
+    width: 1rem;
+}
+
+.h-4 {
+    height: 1rem;
+}
+
+.h-1 {
+    height: 0.25rem;
+}
+
+.mb-1 {
+    margin-bottom: 0.25rem;
+}
+
+.mr-4 {
+    margin-right: 1rem;
+}
+
+.rounded {
+    border-radius: 0.25rem;
 }
 
 @media only screen and (max-width: 600px) {

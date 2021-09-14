@@ -1,5 +1,5 @@
 module.exports = {
-  purge: ["./dist/main.js"],
+  purge: ["./index.html"],
   theme: {
     screens: {
       sm: { max: "639px" },

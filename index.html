@@ -21,76 +21,79 @@
         <link href="style.css" rel="stylesheet"/>
     </head>
     <body>
-        <div class="sidebar flex-shrink w-1/6 h-screen"> <!-- Sidebar -->
+        <div class="sidebar"> <!-- Sidebar -->
             <div class="controls">
                 <div>
-                    <h2 class="heading">H2Ox water dashboard</h2>
-                    <p>India water reservoir dashboard</p>
+                    <h2 class="title">H2Ox water dashboard</h2>
+                    <p>This dashboard gives a brief overview of a few reservoirs in India.</p>
                 </div>
                 <div>
-                    <p><strong>Click on a reservoir to get its forecast!</strong></p>
-                    <p>Choose the starting date of the forecast above the chart</p>
+                    <p class="info"><strong>🙋Choose a reservoir by clicking it on the map, or in the list below.</strong></p>
+                    <p>The graph below shows the historical and forecast dam levels in trillion meters cubed for the selected reservoir, with a confidence interval on the forecast.</p>
+                    <p class="info">🙋 Choose the starting date of the forecast below. Today's date makes the most sense, but we include historical dates to see how the models performs in other periods!</p>
+                </div>
+                <div class="date">
+                    <input type="date" id="date" value="2020-01-01" min="2012-01-01" max="2020-07-01">
                 </div>
             </div>
             <div class="warnings">
                 <div>
-                    <h2 class="heading">Summary</h2>
-                    <p>Quick summary for each reservoir.</p>
-                    <p>Number indicates current level. Numbers in red are below 50% full.</p>
-                    <p>Arrow indicaters whether the level is increasing or decreasing in the next 3 months.</p>
+                    <h2 class="title">Summary</h2>
+                    <p>Number indicates current level. Numbers in <strong style="color:red;">red</strong> are below 50% full at the chosen date. Arrows indicate whether the level is increasing or decreasing in the next 3 months.</p>
                 </div>
                 <div>
-                    <div class="res">
-                        <div id="but-kri">Krisharaja Sagar</div>
+                    <div id="but-kri" class="res selected">
+                        <div>Krisharaja Sagar</div>
                         <div class="level">
                             <div id="lev-kri">56</div>
                             <div class="arrow" id="dir-kri">↑</div>
                         </div>
                     </div>
-                    <div class="res">
-                        <div id="but-har">Harangi</div>
+                    <div id="but-har" class="res">
+                        <div>Harangi</div>
                         <div class="level">
                             <div id="lev-har">56</div>
                             <div class="arrow" id="dir-har">↑</div>
                         </div>
                     </div>
-                    <div class="res">
-                        <div id="but-hem">Hemavathy</div>
+                    <div id="but-hem" class="res">
+                        <div>Hemavathy</div>
                         <div class="level">
                             <div id="lev-hem">56</div>
                             <div class="arrow" id="dir-hem">↑</div>
                         </div>
                     </div>
-                    <div class="res">
-                        <div id="but-kab">Kabini</div>
+                    <div id="but-kab" class="res">
+                        <div>Kabini</div>
                         <div class="level">
                             <div id="lev-kab">56</div>
                             <div class="arrow" id="dir-kab">↑</div>
                         </div>
                     </div>
-                    <div class="res">
-                        <div id="but-bha">Bhadra</div>
-                        <div class="level">
-                            <div id="lev-bha"></div>
-                            <div class="arrow" id="dir-bha"></div>
-                        </div>
-                    </div>
-                    <div class="res">
-                        <div id="but-low">Lower Bhawani</div>
-                        <div class="level">
-                            <div id="lev-low"></div>
-                            <div class="arrow" id="dir-low"></div>
-                        </div>
-                    </div>
+                    <!--<div id="but-bha" class="res">-->
+                    <!--<div>Bhadra</div>-->
+                    <!--<div class="level">-->
+                    <!--<div id="lev-bha"></div>-->
+                    <!--<div class="arrow" id="dir-bha"></div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--<div id="but-low" class="res">-->
+                    <!--<div>Lower Bhawani</div>-->
+                    <!--<div class="level">-->
+                    <!--<div id="lev-low"></div>-->
+                    <!--<div class="arrow" id="dir-low"></div>-->
+                    <!--</div>-->
+                    <!--</div>-->
                 </div>
             </div>
         </div>
 
-        <div class="main flex flex-col flex-grow"> <!-- Main container -->
-            <div id="map" class="h-1/2"></div>
+        <div class="main"> <!-- Main container -->
+            <div id="map"></div>
             <div id="layers"> <!-- Legend -->
                 <div>
                     <h2>Layers</h2>
+                    <p class="info">🙋 Toggle layers to get an idea of the network of rivers and reservoirs, and how they relate to basins, rain patterns and large cities.<p>
                 </div>
                 <div>
                     <div>
@@ -143,10 +146,6 @@
                 </div>
             </div>
             <div id="outer-chart-container">
-                <div>
-                    <span>Reservoir:<span id="chart-title">Kabini</span></span>
-                    <input type="date" id="date" value="2020-01-01" min="2012-01-01" max="2020-07-01">
-                </div>
                 <div id="chart-container">
                     <canvas id="chart"></canvas>
                 </div>

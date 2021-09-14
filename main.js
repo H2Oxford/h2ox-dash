@@ -7,15 +7,15 @@ const MB_TOKEN =
 const MB_STYLE =
   "mapbox://styles/carderne/ckrjgvfbr8auv19nzc3fir8p9?fresh=true";
 
-const chartTitle = get("chart-title");
 const dateSelect = get("date");
 
-let dam = "kabini";
+let dam = "krisharaja";
 let date = "2020-01-01";
 
 const setDate = (e) => {
   date = e.target.value;
   loadData(makeChart);
+  updateLatest();
 };
 dateSelect.onchange = setDate;
 
@@ -45,8 +45,8 @@ const reservoirs = [
   "Harangi",
   "Hemavathy",
   "Kabini",
-  "Bhadra",
-  "Lower Bhawani",
+  //"Bhadra",
+  //"Lower Bhawani",
 ];
 
 mapboxgl.accessToken = MB_TOKEN;
@@ -76,8 +76,10 @@ map.on("load", () => {
 const handleClick = (e) => {
   e.preventDefault();
   const name = e.features[0].properties.DAM_NAME;
-  chartTitle.innerText = name;
   dam = name.split(" ")[0].toLowerCase();
+  const code = dam.slice(0, 3);
+  clearColors();
+  get("but-" + code).classList.add("selected");
   loadData(makeChart);
 };
 
@@ -90,8 +92,8 @@ const makeChart = (data) => {
       data: data.forecast,
       fill: false,
       lineTension: 0.3,
-      borderColor: "rgba(157, 62, 174, 1)",
-      backgroundColor: "rgba(157, 62, 174, 0.2)",
+      borderColor: "rgba(240, 171, 0, 1)",
+      backgroundColor: "rgba(240, 171, 0, 0.15)",
       borderCapStyle: "round",
       pointBorderWidth: 0,
       borderWidth: 6,
@@ -101,8 +103,8 @@ const makeChart = (data) => {
       data: data.forecastUp,
       fill: "+1",
       lineTension: 0.3,
-      borderColor: "rgba(157, 62, 174, 0.2)",
-      backgroundColor: "rgba(157, 62, 174, 0.2)",
+      borderColor: "rgba(240, 171, 0, 1)",
+      backgroundColor: "rgba(240, 171, 0, 0.15)",
       borderCapStyle: "round",
       pointBorderWidth: 0,
       borderWidth: 1,
@@ -115,8 +117,8 @@ const makeChart = (data) => {
       fill: false,
       hidden: false,
       lineTension: 0.3,
-      borderColor: "rgba(157, 62, 174, 0.2)",
-      backgroundColor: "rgba(157, 62, 174, 0.2)",
+      borderColor: "rgba(240, 171, 0, 1)",
+      backgroundColor: "rgba(240, 171, 0, 0.15)",
       borderCapStyle: "round",
       pointBorderWidth: 0,
       borderWidth: 1,
@@ -127,8 +129,8 @@ const makeChart = (data) => {
       data: data.historic,
       fill: true,
       lineTension: 0.3,
-      borderColor: "rgba(57, 162, 174, 1)",
-      backgroundColor: "rgba(57, 162, 174, 0.2)",
+      borderColor: "rgba(151, 189, 61, 1)",
+      backgroundColor: "rgba(151, 189, 61, 0.15)",
       borderCapStyle: "round",
       pointBorderWidth: 0,
       borderWidth: 4,
@@ -198,12 +200,12 @@ const makeChart = (data) => {
   }
 };
 
-const loadData = (fn, parDam = null, parDate = null, history = 180) => {
+const loadData = (fn, parDam = null, history = 180) => {
   const url = window.location.href.includes("h2ox")
     ? new URL("https://h2ox-api.herokuapp.com/api/")
     : new URL("http://localhost:5000/api/");
   url.searchParams.append("reservoir", parDam || dam);
-  url.searchParams.append("date", parDate || date);
+  url.searchParams.append("date", date);
   url.searchParams.append("history", history);
 
   let headers = new Headers();
@@ -221,18 +223,16 @@ const loadData = (fn, parDam = null, parDate = null, history = 180) => {
 
 const handleButClick = (e) => {
   e.preventDefault();
-  const name = e.target.innerText;
-  chartTitle.innerText = name;
+  const name = e.currentTarget.children[0].innerText;
   dam = name.split(" ")[0].toLowerCase();
+  clearColors();
+  e.currentTarget.classList.add("selected");
   loadData(makeChart);
 };
 
 const latest = (data, name) => {
   if (data.historic) {
-    const max = data.historic.reduce(
-      (prev, next) => (prev.y > next.y ? prev.y : next.y),
-      0
-    );
+    const max = Math.max(...data.historic.map((el) => parseFloat(el.y)));
     const level = data.historic.slice(-1)[0].y;
     const fut = data.forecast.slice(-1)[0].y;
 
@@ -240,17 +240,29 @@ const latest = (data, name) => {
     const divlev = get("lev-" + code);
     const divarr = get("dir-" + code);
 
-    divlev.innerText = level;
+    divlev.innerHTML = level + " <small>TMC</small>";
     divlev.style = "color:" + (level > max * 0.5 ? "green" : "red");
     divarr.innerText = fut > level ? "↑" : "↓";
     divarr.style = "color:" + (fut > level ? "green" : "red");
   }
 };
 
+const clearColors = () => {
+  reservoirs.forEach((res) => {
+    const name = res.split(" ")[0].toLowerCase();
+    const code = name.slice(0, 3);
+    get("but-" + code).classList.remove("selected");
+  });
+};
+
+const updateLatest = () => {
+  reservoirs.forEach((res) => {
+    const name = res.split(" ")[0].toLowerCase();
+    const code = name.slice(0, 3);
+    get("but-" + code).onclick = handleButClick;
+    loadData(latest, name, 3000);
+  });
+};
+
 loadData(makeChart);
-reservoirs.forEach((res) => {
-  const name = res.split(" ")[0].toLowerCase();
-  const code = name.slice(0, 3);
-  get("but-" + code).onclick = handleButClick;
-  loadData(latest, name, "2020-01-01", 3000);
-});
+updateLatest();
