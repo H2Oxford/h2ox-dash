@@ -17,6 +17,7 @@ body {
     overflow-y: scroll;
     flex-shrink: 1;
     width: 20%;
+    min-width: 344px;
     height: 100vh;
 }
 
@@ -187,6 +188,7 @@ select {
     }
 
     .sidebar {
+        overflow-y: initial;
         width: 100vw;
         flex-grow: 1;
         height: initial;
