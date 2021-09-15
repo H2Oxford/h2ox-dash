@@ -96,41 +96,17 @@ Chart.defaults.font.size = 16;
 const makeChart = (data) => {
   let datasets = [
     {
-      label: "Forecast",
-      data: data.forecast,
+      label: "Precipitation",
+      data: data.prec,
       fill: false,
       lineTension: 0.3,
-      borderColor: "rgba(240, 171, 0, 1)",
-      backgroundColor: "rgba(240, 171, 0, 0.15)",
-      borderCapStyle: "round",
-      pointBorderWidth: 0,
-      borderWidth: 6,
-    },
-    {
-      label: "Down",
-      data: data.forecastUp,
-      fill: "+1",
-      lineTension: 0.3,
-      borderColor: "rgba(240, 171, 0, 1)",
-      backgroundColor: "rgba(240, 171, 0, 0.15)",
+      borderColor: "rgba(0, 11, 200, 1)",
+      backgroundColor: "rgba(0, 11, 200, 1)",
       borderCapStyle: "round",
       pointBorderWidth: 0,
       borderWidth: 1,
       radius: 0,
-      legend: false,
-    },
-    {
-      label: "Up",
-      data: data.forecastDown,
-      fill: false,
-      hidden: false,
-      lineTension: 0.3,
-      borderColor: "rgba(240, 171, 0, 1)",
-      backgroundColor: "rgba(240, 171, 0, 0.15)",
-      borderCapStyle: "round",
-      pointBorderWidth: 0,
-      borderWidth: 1,
-      radius: 0,
+      yAxisID: "y1",
     },
     {
       label: "Historic",
@@ -143,6 +119,43 @@ const makeChart = (data) => {
       pointBorderWidth: 0,
       borderWidth: 4,
     },
+    {
+      label: "Forecast",
+      data: data.forecast,
+      fill: false,
+      lineTension: 0.3,
+      borderColor: "rgba(240, 171, 0, 1)",
+      backgroundColor: "rgba(240, 171, 0, 0.15)",
+      borderCapStyle: "round",
+      pointBorderWidth: 0,
+      borderWidth: 6,
+    },
+    {
+      label: "",
+      data: data.forecastUp,
+      fill: "+1",
+      lineTension: 0.3,
+      borderColor: "rgba(240, 171, 0, 1)",
+      backgroundColor: "rgba(240, 171, 0, 0.15)",
+      borderCapStyle: "round",
+      pointBorderWidth: 0,
+      borderWidth: 1,
+      radius: 0,
+      legend: false,
+    },
+    {
+      label: "",
+      data: data.forecastDown,
+      fill: false,
+      hidden: false,
+      lineTension: 0.3,
+      borderColor: "rgba(240, 171, 0, 1)",
+      backgroundColor: "rgba(240, 171, 0, 0.15)",
+      borderCapStyle: "round",
+      pointBorderWidth: 0,
+      borderWidth: 1,
+      radius: 0,
+    },
   ];
 
   if (chart == undefined) {
@@ -152,7 +165,12 @@ const makeChart = (data) => {
       options: {
         plugins: {
           legend: {
-            display: false,
+            display: true,
+            labels: {
+              filter: function (legendItem, chartData) {
+                return chartData.datasets[legendItem.datasetIndex].label;
+              },
+            },
           },
         },
         scales: {
@@ -189,9 +207,20 @@ const makeChart = (data) => {
               fontSize: 16,
             },
           },
-        },
-        legend: {
-          display: false,
+          y1: {
+            title: {
+              display: true,
+              text: "Precipitation",
+              color: "rgba(0, 11, 200, 1)",
+            },
+            position: "right",
+            grid: {
+              drawOnChartArea: false,
+            },
+            ticks: {
+              color: "rgba(0, 11, 200, 1)",
+            },
+          },
         },
         showTooltips: false,
         tooltips: {
