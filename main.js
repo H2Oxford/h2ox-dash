@@ -53,8 +53,8 @@ const reservoirs = [
   "Harangi",
   "Hemavathy",
   "Kabini",
-  //"Bhadra",
-  //"Lower Bhawani",
+  "Bhadra",
+  "Lower Bhawani",
 ];
 
 mapboxgl.accessToken = MB_TOKEN;
