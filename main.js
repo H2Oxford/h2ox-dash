@@ -69,16 +69,19 @@ let map = new mapboxgl.Map({
 map.dragRotate.disable();
 map.touchZoomRotate.disableRotation();
 
+const pointer = () => (map.getCanvas().style.cursor = "pointer");
+const nopointer = () => (map.getCanvas().style.cursor = "");
+
 map.on("load", () => {
-  map.on("mouseenter", "res-fill", () => {
-    map.getCanvas().style.cursor = "pointer";
-  });
-
-  map.on("mouseleave", "res-fill", () => {
-    map.getCanvas().style.cursor = "";
-  });
-
+  map.on("mouseenter", "res-fill", pointer);
+  map.on("mouseleave", "res-fill", nopointer);
+  map.on("mouseenter", "res-line", pointer);
+  map.on("mouseleave", "res-line", nopointer);
+  map.on("mouseenter", "res-name", pointer);
+  map.on("mouseleave", "res-name", nopointer);
   map.on("click", "res-fill", handleClick);
+  map.on("click", "res-line", handleClick);
+  map.on("click", "res-name", handleClick);
 });
 
 const handleClick = (e) => {
