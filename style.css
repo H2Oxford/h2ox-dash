@@ -1,6 +1,6 @@
 html, body {
-    background-color: ##f3f4f6;
-    font: 1em arial;
+    background-color: #fcfcfd;
+    font: 0.9em arial;
     margin: 0;
     width: 100vw;
     height: 100vh;
@@ -13,9 +13,8 @@ body {
 
 .sidebar {
     overflow-y: scroll;
-    flex-shrink: 1;
-    width: 20%;
-    min-width: 344px;
+    flex-shrink: 0;
+    width: 344px;
     height: 100%;
 }
 
@@ -73,6 +72,17 @@ select {
     }
 }
 
+.fixed {
+    background-color: #fcfcfd;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.fixed + div {
+    margin-top: 60px;
+}
+
 #layers {
     position: fixed;
     top: 10px;
@@ -85,11 +95,17 @@ select {
 
 #outer-chart-container {
     height: 50%;
+    position: relative;
 }
 
 #chart-container {
     height: 90%;
     padding: 1em;
+    position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 }
 
 .res {
@@ -101,17 +117,9 @@ select {
     background-color: #E2E8F0;
     border-color: #E2E8F0;
     border-radius: 10px;
-    margin: 0.5rem;
-    margin-bottom: 1rem;
+    margin: 0.8rem 1rem;
     padding: 0.1rem 0.5rem;
-}
-
-.res > div:first-child {
     font-weight: bold;
-}
-
-.res:last-child {
-    margin-bottom: 0;
 }
 
 .selected {
@@ -210,6 +218,10 @@ select {
     }
 
     #map {
+        height: 40vh;
+    }
+
+    #outer-chart-container {
         height: 40vh;
     }
 
