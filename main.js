@@ -198,7 +198,7 @@ const makeChart = (data) => {
           y: {
             title: {
               display: true,
-              text: "Reservoir capacity (BMC)",
+              text: "Reservoir capacity (MMC)",
             },
             suggestedMin: 0,
             gridLines: {
@@ -280,7 +280,7 @@ const latest = (data, name) => {
     const divlev = get("lev-" + code);
     const divarr = get("dir-" + code);
 
-    divlev.innerHTML = level + " <small>BMC</small>";
+    divlev.innerHTML = parseInt(level) + " <small>MMC</small>";
     divlev.style = "color:" + (level > max * 0.5 ? "green" : "red");
     divarr.innerText = fut > level ? "↑" : "↓";
     divarr.style = "color:" + (fut > level ? "green" : "red");
