@@ -10,8 +10,8 @@ const MB_STYLE =
 const dateSelect = get("date");
 const historySelect = get("history");
 
-let dam = "krisharaja";
-let date = "2020-01-01";
+let dam = "krishnaraja";
+let date = "2021-09-08";
 let history = 180;
 
 const setDate = (e) => {
@@ -49,7 +49,7 @@ Object.entries(checkBoxes).forEach(([key, layers]) => {
 });
 
 const reservoirs = [
-  "Krisharaja Sagar",
+  "Krishnaraja Sagar",
   "Harangi",
   "Hemavathy",
   "Kabini",
@@ -198,7 +198,7 @@ const makeChart = (data) => {
           y: {
             title: {
               display: true,
-              text: "Reservoir capacity (TMC)",
+              text: "Reservoir capacity (BMC)",
             },
             suggestedMin: 0,
             gridLines: {
@@ -280,7 +280,7 @@ const latest = (data, name) => {
     const divlev = get("lev-" + code);
     const divarr = get("dir-" + code);
 
-    divlev.innerHTML = level + " <small>TMC</small>";
+    divlev.innerHTML = level + " <small>BMC</small>";
     divlev.style = "color:" + (level > max * 0.5 ? "green" : "red");
     divarr.innerText = fut > level ? "↑" : "↓";
     divarr.style = "color:" + (fut > level ? "green" : "red");
