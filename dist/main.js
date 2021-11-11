@@ -1,6 +1,7 @@
 /* global Vue mapboxgl */
 
 import { makeChart } from "./chart.js";
+import { dams } from "./data.js";
 
 const updateChart = (data) => {
   chart = makeChart(data, chart);
@@ -19,57 +20,6 @@ const historySelect = get("history");
 
 let date = "2021-09-08";
 let history = 180;
-
-const dams = [
-  {
-    name: "krishnaraja",
-    label: "Krishnaraja Sagar",
-    max: 1163,
-    level: 560,
-    fut: 100,
-    sel: true,
-  },
-  {
-    name: "harangi",
-    label: "Harangi",
-    max: 220,
-    level: 180,
-    fut: 10,
-    sel: false,
-  },
-  {
-    name: "hemavathy",
-    label: "Hemavathy",
-    max: 927,
-    level: 300,
-    fut: 100,
-    sel: false,
-  },
-  {
-    name: "kabini",
-    label: "Kabini",
-    max: 444,
-    level: 90,
-    fut: 10,
-    sel: false,
-  },
-  {
-    name: "bhadra",
-    label: "Bhadra",
-    max: 1785,
-    level: 1500,
-    fut: 100,
-    sel: false,
-  },
-  {
-    name: "lower",
-    label: "Lower Bhawani",
-    max: 792,
-    level: 400,
-    fut: 100,
-    sel: false,
-  },
-];
 
 // eslint-disable-next-line no-unused-vars
 const app = new Vue({
