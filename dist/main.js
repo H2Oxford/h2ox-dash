@@ -1,7 +1,7 @@
 /* global Vue mapboxgl */
 
 import { makeChart } from "./chart.js";
-import { dams } from "./data.js";
+import { dams, checkBoxes } from "./data.js";
 
 const updateChart = (data) => {
   chart = makeChart(data, chart);
@@ -21,7 +21,19 @@ const historySelect = get("history");
 let date = "2021-09-08";
 let history = 180;
 
-// eslint-disable-next-line no-unused-vars
+Vue.component("checkbox", {
+  props: ["obj"],
+  template: `
+  <div>
+    <input type="checkbox" v-model="obj.checked">
+    <span class="inline-block w-4 h-4 mb-1 align-middle mr-4 rounded"
+          :style="[obj.style]">
+    </span>
+    <span class="align-middle">{{ obj.label }}</span>
+  </div>
+  `,
+});
+
 const app = new Vue({
   el: "#dams",
   data: {
@@ -55,7 +67,22 @@ const app = new Vue({
       );
     },
   },
-  methods: {},
+});
+
+// eslint-disable-next-line no-unused-vars
+const app2 = new Vue({
+  el: "#layers",
+  data: {
+    checks: checkBoxes,
+  },
+  methods: {
+    update: function (layers, checked) {
+      layers.forEach((lay) => {
+        console.log(lay, checked);
+        map.setLayoutProperty(lay, "visibility", checked ? "visible" : "none");
+      });
+    },
+  },
 });
 
 const setDate = (e) => {
@@ -70,27 +97,6 @@ const setHistory = (e) => {
   loadData(updateChart);
 };
 historySelect.onchange = setHistory;
-
-const setLayerVis = (e, layers) => {
-  const vis = e.target.checked ? "visible" : "none";
-  layers.forEach((lay) => {
-    map.setLayoutProperty(lay, "visibility", vis);
-  });
-};
-const checkBoxes = {
-  "check-res": ["res-fill", "res-line", "res-name"],
-  "check-riv": ["rivers"],
-  "check-basins": ["basins"],
-  "check-aqueduct": ["aqueduct"],
-  "check-precip": ["precip"],
-  "check-benga": ["bengaluru"],
-  "check-canal": ["canal-line"],
-};
-Object.entries(checkBoxes).forEach(([key, layers]) => {
-  get(key).onchange = (e) => {
-    setLayerVis(e, layers);
-  };
-});
 
 mapboxgl.accessToken = MB_TOKEN;
 let map = new mapboxgl.Map({

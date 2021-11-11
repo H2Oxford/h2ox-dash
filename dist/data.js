@@ -48,3 +48,55 @@ export const dams = [
     sel: false,
   },
 ];
+
+export const checkBoxes = {
+  res: {
+    label: "Reservoirs",
+    checked: true,
+    layers: ["res-fill", "res-line", "res-name"],
+    class: "inline-block w-4 h-4 mb-1 align-middle mr-4 rounded",
+    style: "background-color:#0ee1e1;border-color:#0707e4;border-width:2px;",
+  },
+  riv: {
+    label: "Rivers",
+    checked: true,
+    layers: ["rivers"],
+    class: "inline-block w-4 h-1 mb-1 align-middle mr-4 rounded",
+    style: "background-color:#061e99;",
+  },
+  basins: {
+    label: "Basins",
+    checked: true,
+    layers: ["basins"],
+    class: "inline-block w-4 h-1 mb-1 align-middle mr-4 rounded",
+    style: "background-color: #120514;",
+  },
+  aqueduct: {
+    label: "Aqueduct baseline risk",
+    checked: false,
+    layers: ["aqueduct"],
+    class: "inline-block w-4 h-4 mb-1 align-middle mr-4 rounded",
+    style: "background-color:#fdcc8a;",
+  },
+  precip: {
+    label: "Mean precipitation",
+    checked: false,
+    layers: ["precip"],
+    class: "inline-block w-4 h-4 mb-1 align-middle mr-4 rounded",
+    style: "background-color:#2b8cbe;",
+  },
+  benga: {
+    label: "Bengaluru",
+    checked: true,
+    layers: ["bengaluru"],
+    class: "inline-block w-4 h-4 mb-1 align-middle mr-4 rounded",
+    style: "background-color:#382323;",
+  },
+  canal: {
+    label: "Bengaluru canal",
+    checked: false,
+    layers: ["canal-line"],
+    class: "inline-block w-4 h-1 mb-1 align-middle mr-4 rounded",
+    style: "background-color: #195700;",
+  },
+};

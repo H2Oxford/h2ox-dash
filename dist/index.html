@@ -70,52 +70,13 @@
                     <p class="info">🙋 Toggle layers to get an idea of the network of rivers and reservoirs, and how they relate to basins, rain patterns and large cities.<p>
                 </div>
                 <div>
-                    <div>
-                        <input type="checkbox" id="check-res" checked>
-                        <span class="inline-block w-4 h-4 mb-1 align-middle mr-4 rounded" style="background-color:#0ee1e1;border-color:#0707e4;border-width:2px;"></span>
-                        <span class="align-middle">Reservoirs</span>
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <input type="checkbox" id="check-riv" checked>
-                        <span class="inline-block w-4 h-1 mb-1 align-middle mr-4 rounded" style="background-color:#061e99;"></span>
-                        <span class="align-middle">Rivers</span>
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <input type="checkbox" id="check-basins" checked>
-                        <span class="inline-block w-4 h-1 mb-1 align-middle mr-4 rounded" style="background-color: #120514;"></span>
-                        <span class="align-middle">Basins</span>
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <input type="checkbox" id="check-aqueduct">
-                        <span class="inline-block w-4 h-4 mb-1 align-middle mr-4 rounded" style="background-color:#fdcc8a;"></span>
-                        <span class="align-middle">Aqueduct baseline risk</span>
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <input type="checkbox" id="check-precip">
-                        <span class="inline-block w-4 h-4 mb-1 align-middle mr-4 rounded" style="background-color:#2b8cbe;"></span>
-                        <span class="align-middle">Mean precipitation</span>
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <input type="checkbox" id="check-benga" checked>
-                        <span class="inline-block w-4 h-4 mb-1 align-middle mr-4 rounded" style="background-color:#382323;"></span>
-                        <span class="align-middle">Bengaluru</span>
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <input type="checkbox" id="check-canal">
-                        <span class="inline-block w-4 h-1 mb-1 align-middle mr-4 rounded" style="background-color: #195700;"></span>
-                        <span class="align-middle">Bengaluru canal</span>
+                    <div v-for="(c, key) in checks">
+                        <input type="checkbox" v-model="c.checked"
+                               @change="update(c.layers, c.checked)">
+                        <span :class="c.class"
+                              :style="c.style">
+                        </span>
+                        <span class="align-middle">{{ c.label }}</span>
                     </div>
                 </div>
             </div>
