@@ -3,38 +3,18 @@
 import { makeChart } from "./chart.js";
 import { dams, checkBoxes } from "./data.js";
 
+const get = document.getElementById.bind(document);
+
+// Global variables and helpers
+let chart;
 const updateChart = (data) => {
   chart = makeChart(data, chart);
 };
-
-const get = document.getElementById.bind(document);
-let chart;
-
-const MB_TOKEN =
-  "pk.eyJ1IjoiY2FyZGVybmUiLCJhIjoiY2puMXN5cnBtNG53NDN2bnhlZ3h4b3RqcCJ9.eNjrtezXwvM7Ho1VSxo06w";
-const MB_STYLE =
-  "mapbox://styles/carderne/ckrjgvfbr8auv19nzc3fir8p9?fresh=true";
-
-const dateSelect = get("date");
-const historySelect = get("history");
-
 let date = "2021-09-08";
 let history = 180;
 
-Vue.component("checkbox", {
-  props: ["obj"],
-  template: `
-  <div>
-    <input type="checkbox" v-model="obj.checked">
-    <span class="inline-block w-4 h-4 mb-1 align-middle mr-4 rounded"
-          :style="[obj.style]">
-    </span>
-    <span class="align-middle">{{ obj.label }}</span>
-  </div>
-  `,
-});
-
-const app = new Vue({
+// Vue app for dam selectors and info
+const appDams = new Vue({
   el: "#dams",
   data: {
     dams: dams,
@@ -69,8 +49,9 @@ const app = new Vue({
   },
 });
 
+// Vue app for map layer check boxes
 // eslint-disable-next-line no-unused-vars
-const app2 = new Vue({
+const appChecks = new Vue({
   el: "#layers",
   data: {
     checks: checkBoxes,
@@ -85,23 +66,24 @@ const app2 = new Vue({
   },
 });
 
-const setDate = (e) => {
+// Date and history depth still managed manually
+get("date").onchange = (e) => {
   date = e.target.value;
   loadData(updateChart);
   updateLatest();
 };
-dateSelect.onchange = setDate;
 
-const setHistory = (e) => {
+get("history").onchange = (e) => {
   history = parseInt(e.target.value);
   loadData(updateChart);
 };
-historySelect.onchange = setHistory;
 
-mapboxgl.accessToken = MB_TOKEN;
+// Mapbox stuff
+mapboxgl.accessToken =
+  "pk.eyJ1IjoiY2FyZGVybmUiLCJhIjoiY2puMXN5cnBtNG53NDN2bnhlZ3h4b3RqcCJ9.eNjrtezXwvM7Ho1VSxo06w";
 let map = new mapboxgl.Map({
   container: "map",
-  style: MB_STYLE,
+  style: "mapbox://styles/carderne/ckrjgvfbr8auv19nzc3fir8p9?fresh=true",
   bounds: [73.94, 11.18, 83.35, 14.04], // bbox is in order west, south, east, north
   maxBounds: [71, 7, 86, 17],
   minZoom: 5,
@@ -127,14 +109,17 @@ map.on("load", () => {
 
 const handleClick = (e) => {
   e.preventDefault();
-  app.active = e.features[0].properties.DAM_NAME.split(" ")[0].toLowerCase();
+  appDams.active = e.features[0].properties.DAM_NAME.split(
+    " "
+  )[0].toLowerCase();
 };
 
+// Data stuff
 const loadData = (fn, parDam = null, parHistory = null) => {
   const url = window.location.href.includes("h2ox")
     ? new URL("https://h2ox-api.herokuapp.com/api/")
     : new URL("http://localhost:5111/api/");
-  url.searchParams.append("reservoir", parDam || app.active);
+  url.searchParams.append("reservoir", parDam || appDams.active);
   url.searchParams.append("date", date);
   url.searchParams.append("history", parHistory || history);
 
@@ -153,8 +138,8 @@ const loadData = (fn, parDam = null, parHistory = null) => {
 
 const latest = (data, name) => {
   if (data.historic) {
-    app.levels[name] = data.historic.slice(-1)[0].y;
-    app.futs[name] = data.forecast.slice(-1)[0].y;
+    appDams.levels[name] = data.historic.slice(-1)[0].y;
+    appDams.futs[name] = data.forecast.slice(-1)[0].y;
   }
 };
 
@@ -164,5 +149,6 @@ const updateLatest = () => {
   });
 };
 
+// Load data on first load
 loadData(updateChart);
 updateLatest();
