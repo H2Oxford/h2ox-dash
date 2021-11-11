@@ -1,4 +1,4 @@
-/* global mapboxgl Chart */
+/* global Vue mapboxgl Chart */
 
 const get = document.getElementById.bind(document);
 
@@ -13,6 +13,79 @@ const historySelect = get("history");
 let dam = "krishnaraja";
 let date = "2021-09-08";
 let history = 180;
+
+const dams = [
+  {
+    name: "krishnaraja",
+    label: "Krishnaraja Sagar",
+    max: 1163,
+    level: 560,
+    fut: 100,
+    sel: true,
+  },
+  {
+    name: "harangi",
+    label: "Harangi",
+    max: 220,
+    level: 180,
+    fut: 10,
+    sel: false,
+  },
+  {
+    name: "hemavathy",
+    label: "Hemavathy",
+    max: 927,
+    level: 300,
+    fut: 100,
+    sel: false,
+  },
+  {
+    name: "kabini",
+    label: "Kabini",
+    max: 444,
+    level: 90,
+    fut: 10,
+    sel: false,
+  },
+  {
+    name: "bhadra",
+    label: "Bhadra",
+    max: 1785,
+    level: 1500,
+    fut: 100,
+    sel: false,
+  },
+  {
+    name: "lower",
+    label: "Lower Bhawani",
+    max: 792,
+    level: 400,
+    fut: 100,
+    sel: false,
+  },
+];
+
+// eslint-disable-next-line no-unused-vars
+const app = new Vue({
+  el: "#dams",
+  data: {
+    dams: dams,
+  },
+  computed: {
+    dirs: function () {
+      return this.dams.reduce(
+        (acc, el) => ((acc[el.name] = el.fut > el.level), acc),
+        {}
+      );
+    },
+    dirSymbs: function () {
+      return this.dams.reduce(
+        (acc, el) => ((acc[el.name] = el.fut > el.level ? "↑" : "↓"), acc),
+        {}
+      );
+    },
+  },
+});
 
 const setDate = (e) => {
   date = e.target.value;
@@ -47,15 +120,6 @@ Object.entries(checkBoxes).forEach(([key, layers]) => {
     setLayerVis(e, layers);
   };
 });
-
-const reservoirs = [
-  "Krishnaraja Sagar",
-  "Harangi",
-  "Hemavathy",
-  "Kabini",
-  "Bhadra",
-  "Lower Bhawani",
-];
 
 mapboxgl.accessToken = MB_TOKEN;
 let map = new mapboxgl.Map({
@@ -288,19 +352,17 @@ const latest = (data, name) => {
 };
 
 const clearColors = () => {
-  reservoirs.forEach((res) => {
-    const name = res.split(" ")[0].toLowerCase();
-    const code = name.slice(0, 3);
+  dams.forEach((d) => {
+    const code = d.name.slice(0, 3);
     get("but-" + code).classList.remove("selected");
   });
 };
 
 const updateLatest = () => {
-  reservoirs.forEach((res) => {
-    const name = res.split(" ")[0].toLowerCase();
-    const code = name.slice(0, 3);
+  dams.forEach((d) => {
+    const code = d.name.slice(0, 3);
     get("but-" + code).onclick = handleButClick;
-    loadData(latest, name, 3000);
+    loadData(latest, d.name, 3000);
   });
 };
 

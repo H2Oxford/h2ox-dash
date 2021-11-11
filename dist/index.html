@@ -11,6 +11,7 @@
         <meta property="og:url" content="https://www.h2ox.org/">
         <link rel="canonical" href="https://www.h2ox.org/">
         <title>H2Ox dashboard</title>
+        <script src="vendor/vue.js"></script>
         <link href="vendor/mapbox-gl.css" rel="stylesheet" />
         <script src="vendor/mapbox-gl.js"></script>
         <script src="vendor/chart.js"></script>
@@ -46,7 +47,16 @@
                     <h2 class="title">Summary</h2>
                     <p>Numbers show reservoir level for chosen date in million meters cubed (MMC). Any in <strong style="color:red;">red</strong> are below 50% full. Arrows indicate whether the level is increasing or decreasing in the forecast period.</p>
                 </div>
-                <div>
+                <div id="dams">
+                    <div v-for="d in dams" class="res" :class="{ selected: d.sel }">
+                        <div>{{ d.label }}</div>
+                        <div class="level" :class="{ full: d.level > d.max * 0.5 }">
+                            <div>{{ d.level }} <small>MMC</small></div>
+                            <div class="arrow" :class="{ inc: dirs[d.name] }">
+                                {{ dirSymbs[d.name] }}
+                            </div>
+                        </div>
+                    </div>
                     <div id="but-kri" class="res selected">
                         <div>Krishnaraja Sagar</div>
                         <div class="level">
