@@ -48,55 +48,14 @@
                     <p>Numbers show reservoir level for chosen date in million meters cubed (MMC). Any in <strong style="color:red;">red</strong> are below 50% full. Arrows indicate whether the level is increasing or decreasing in the forecast period.</p>
                 </div>
                 <div id="dams">
-                    <div v-for="d in dams" class="res" :class="{ selected: d.sel }">
+                    <div v-for="d in dams" class="res" :class="{ selected: active == d.name }"
+                         @click="active = d.name">
                         <div>{{ d.label }}</div>
-                        <div class="level" :class="{ full: d.level > d.max * 0.5 }">
-                            <div>{{ d.level }} <small>MMC</small></div>
+                        <div class="level" :class="{ full: levels[d.name] > d.max * 0.5 }">
+                            <div>{{ levels[d.name] }} <small>MMC</small></div>
                             <div class="arrow" :class="{ inc: dirs[d.name] }">
                                 {{ dirSymbs[d.name] }}
                             </div>
-                        </div>
-                    </div>
-                    <div id="but-kri" class="res selected">
-                        <div>Krishnaraja Sagar</div>
-                        <div class="level">
-                            <div id="lev-kri">56</div>
-                            <div class="arrow" id="dir-kri">↑</div>
-                        </div>
-                    </div>
-                    <div id="but-har" class="res">
-                        <div>Harangi</div>
-                        <div class="level">
-                            <div id="lev-har">56</div>
-                            <div class="arrow" id="dir-har">↑</div>
-                        </div>
-                    </div>
-                    <div id="but-hem" class="res">
-                        <div>Hemavathy</div>
-                        <div class="level">
-                            <div id="lev-hem">56</div>
-                            <div class="arrow" id="dir-hem">↑</div>
-                        </div>
-                    </div>
-                    <div id="but-kab" class="res">
-                        <div>Kabini</div>
-                        <div class="level">
-                            <div id="lev-kab">56</div>
-                            <div class="arrow" id="dir-kab">↑</div>
-                        </div>
-                    </div>
-                    <div id="but-bha" class="res">
-                        <div>Bhadra</div>
-                        <div class="level">
-                            <div id="lev-bha">56</div>
-                            <div class="arrow" id="dir-bha">↑</div>
-                        </div>
-                    </div>
-                    <div id="but-low" class="res">
-                        <div>Lower Bhawani</div>
-                        <div class="level">
-                            <div id="lev-low">56</div>
-                            <div class="arrow" id="dir-low">↑</div>
                         </div>
                     </div>
                 </div>
@@ -166,6 +125,6 @@
                     <canvas id="chart"></canvas>
                 </div>
             </div>
-            <script src="main.js"></script>
+            <script type="module" src="main.js"></script>
     </body>
 </html>

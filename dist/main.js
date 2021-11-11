@@ -1,6 +1,13 @@
-/* global Vue mapboxgl Chart */
+/* global Vue mapboxgl */
+
+import { makeChart } from "./chart.js";
+
+const updateChart = (data) => {
+  chart = makeChart(data, chart);
+};
 
 const get = document.getElementById.bind(document);
+let chart;
 
 const MB_TOKEN =
   "pk.eyJ1IjoiY2FyZGVybmUiLCJhIjoiY2puMXN5cnBtNG53NDN2bnhlZ3h4b3RqcCJ9.eNjrtezXwvM7Ho1VSxo06w";
@@ -10,7 +17,6 @@ const MB_STYLE =
 const dateSelect = get("date");
 const historySelect = get("history");
 
-let dam = "krishnaraja";
 let date = "2021-09-08";
 let history = 180;
 
@@ -70,33 +76,48 @@ const app = new Vue({
   el: "#dams",
   data: {
     dams: dams,
+    active: dams[0].name,
+    levels: dams.reduce((acc, el) => ((acc[el.name] = el.level), acc), {}),
+    futs: dams.reduce((acc, el) => ((acc[el.name] = el.fut), acc), {}),
+  },
+  watch: {
+    active: function () {
+      loadData(updateChart);
+    },
   },
   computed: {
     dirs: function () {
       return this.dams.reduce(
-        (acc, el) => ((acc[el.name] = el.fut > el.level), acc),
+        (acc, el) => (
+          (acc[el.name] = this.futs[el.name] > this.levels[el.name]), acc
+        ),
         {}
       );
     },
     dirSymbs: function () {
       return this.dams.reduce(
-        (acc, el) => ((acc[el.name] = el.fut > el.level ? "↑" : "↓"), acc),
+        (acc, el) => (
+          (acc[el.name] =
+            this.futs[el.name] > this.levels[el.name] ? "↑" : "↓"),
+          acc
+        ),
         {}
       );
     },
   },
+  methods: {},
 });
 
 const setDate = (e) => {
   date = e.target.value;
-  loadData(makeChart);
+  loadData(updateChart);
   updateLatest();
 };
 dateSelect.onchange = setDate;
 
 const setHistory = (e) => {
   history = parseInt(e.target.value);
-  loadData(makeChart);
+  loadData(updateChart);
 };
 historySelect.onchange = setHistory;
 
@@ -150,165 +171,15 @@ map.on("load", () => {
 
 const handleClick = (e) => {
   e.preventDefault();
-  const name = e.features[0].properties.DAM_NAME;
-  dam = name.split(" ")[0].toLowerCase();
-  const code = dam.slice(0, 3);
-  clearColors();
-  get("but-" + code).classList.add("selected");
-  loadData(makeChart);
-};
-
-let chart;
-Chart.defaults.font.size = 16;
-const makeChart = (data) => {
-  let datasets = [
-    {
-      label: "Precipitation",
-      data: data.prec,
-      fill: false,
-      lineTension: 0.3,
-      borderColor: "rgba(0, 11, 200, 1)",
-      backgroundColor: "rgba(0, 11, 200, 1)",
-      borderCapStyle: "round",
-      pointBorderWidth: 0,
-      borderWidth: 1,
-      radius: 0,
-      yAxisID: "y1",
-    },
-    {
-      label: "Historic",
-      data: data.historic,
-      fill: true,
-      lineTension: 0.3,
-      borderColor: "rgba(151, 189, 61, 1)",
-      backgroundColor: "rgba(151, 189, 61, 0.15)",
-      borderCapStyle: "round",
-      pointBorderWidth: 0,
-      borderWidth: 4,
-    },
-    {
-      label: "Forecast",
-      data: data.forecast,
-      fill: false,
-      lineTension: 0.3,
-      borderColor: "rgba(240, 171, 0, 1)",
-      backgroundColor: "rgba(240, 171, 0, 0.15)",
-      borderCapStyle: "round",
-      pointBorderWidth: 0,
-      borderWidth: 6,
-    },
-    {
-      label: "",
-      data: data.forecastUp,
-      fill: "+1",
-      lineTension: 0.3,
-      borderColor: "rgba(240, 171, 0, 1)",
-      backgroundColor: "rgba(240, 171, 0, 0.15)",
-      borderCapStyle: "round",
-      pointBorderWidth: 0,
-      borderWidth: 1,
-      radius: 0,
-      legend: false,
-    },
-    {
-      label: "",
-      data: data.forecastDown,
-      fill: false,
-      hidden: false,
-      lineTension: 0.3,
-      borderColor: "rgba(240, 171, 0, 1)",
-      backgroundColor: "rgba(240, 171, 0, 0.15)",
-      borderCapStyle: "round",
-      pointBorderWidth: 0,
-      borderWidth: 1,
-      radius: 0,
-    },
-  ];
-
-  if (chart == undefined) {
-    chart = new Chart("chart", {
-      type: "line",
-      data: { datasets: datasets },
-      options: {
-        plugins: {
-          legend: {
-            display: true,
-            labels: {
-              filter: function (legendItem, chartData) {
-                return chartData.datasets[legendItem.datasetIndex].label;
-              },
-            },
-          },
-        },
-        scales: {
-          x: {
-            gridLines: {
-              drawBorder: false,
-              lineWidth: 3,
-              zeroLineWidth: 3,
-              display: true,
-              drawOnChartArea: false,
-            },
-            type: "time",
-            time: {
-              unit: "month",
-              minUnit: "day",
-              stepSize: 1,
-            },
-            ticks: {
-              fontSize: 14,
-            },
-          },
-          y: {
-            title: {
-              display: true,
-              text: "Reservoir capacity (MMC)",
-            },
-            suggestedMin: 0,
-            gridLines: {
-              drawBorder: false,
-              lineWidth: 2,
-              zeroLineWidth: 2,
-            },
-            ticks: {
-              fontSize: 16,
-            },
-          },
-          y1: {
-            title: {
-              display: true,
-              text: "Precipitation",
-              color: "rgba(0, 11, 200, 1)",
-            },
-            position: "right",
-            grid: {
-              drawOnChartArea: false,
-            },
-            ticks: {
-              color: "rgba(0, 11, 200, 1)",
-            },
-          },
-        },
-        showTooltips: false,
-        tooltips: {
-          enabled: false,
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-      },
-    });
-  } else {
-    chart.data.datasets.pop();
-    chart.data.datasets = datasets;
-    chart.update({ duration: 0 });
-  }
+  app.active = e.features[0].properties.DAM_NAME.split(" ")[0].toLowerCase();
+  loadData(updateChart);
 };
 
 const loadData = (fn, parDam = null, parHistory = null) => {
   const url = window.location.href.includes("h2ox")
     ? new URL("https://h2ox-api.herokuapp.com/api/")
     : new URL("http://localhost:5111/api/");
-  url.searchParams.append("reservoir", parDam || dam);
+  url.searchParams.append("reservoir", parDam || app.active);
   url.searchParams.append("date", date);
   url.searchParams.append("history", parHistory || history);
 
@@ -325,46 +196,18 @@ const loadData = (fn, parDam = null, parHistory = null) => {
     .then((data) => fn(data, parDam));
 };
 
-const handleButClick = (e) => {
-  e.preventDefault();
-  const name = e.currentTarget.children[0].innerText;
-  dam = name.split(" ")[0].toLowerCase();
-  clearColors();
-  e.currentTarget.classList.add("selected");
-  loadData(makeChart);
-};
-
 const latest = (data, name) => {
   if (data.historic) {
-    const max = Math.max(...data.historic.map((el) => parseFloat(el.y)));
-    const level = data.historic.slice(-1)[0].y;
-    const fut = data.forecast.slice(-1)[0].y;
-
-    const code = name.slice(0, 3);
-    const divlev = get("lev-" + code);
-    const divarr = get("dir-" + code);
-
-    divlev.innerHTML = parseInt(level) + " <small>MMC</small>";
-    divlev.style = "color:" + (level > max * 0.5 ? "green" : "red");
-    divarr.innerText = fut > level ? "↑" : "↓";
-    divarr.style = "color:" + (fut > level ? "green" : "red");
+    app.levels[name] = data.historic.slice(-1)[0].y;
+    app.futs[name] = data.forecast.slice(-1)[0].y;
   }
-};
-
-const clearColors = () => {
-  dams.forEach((d) => {
-    const code = d.name.slice(0, 3);
-    get("but-" + code).classList.remove("selected");
-  });
 };
 
 const updateLatest = () => {
   dams.forEach((d) => {
-    const code = d.name.slice(0, 3);
-    get("but-" + code).onclick = handleButClick;
     loadData(latest, d.name, 3000);
   });
 };
 
-loadData(makeChart);
+loadData(updateChart);
 updateLatest();
