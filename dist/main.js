@@ -122,7 +122,6 @@ map.on("load", () => {
 const handleClick = (e) => {
   e.preventDefault();
   app.active = e.features[0].properties.DAM_NAME.split(" ")[0].toLowerCase();
-  loadData(updateChart);
 };
 
 const loadData = (fn, parDam = null, parHistory = null) => {
@@ -155,7 +154,7 @@ const latest = (data, name) => {
 
 const updateLatest = () => {
   dams.forEach((d) => {
-    loadData(latest, d.name, 3000);
+    loadData(latest, d.name);
   });
 };
 
