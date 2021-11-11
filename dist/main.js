@@ -243,7 +243,7 @@ const makeChart = (data) => {
 const loadData = (fn, parDam = null, parHistory = null) => {
   const url = window.location.href.includes("h2ox")
     ? new URL("https://h2ox-api.herokuapp.com/api/")
-    : new URL("http://localhost:5000/api/");
+    : new URL("http://localhost:5111/api/");
   url.searchParams.append("reservoir", parDam || dam);
   url.searchParams.append("date", date);
   url.searchParams.append("history", parHistory || history);
