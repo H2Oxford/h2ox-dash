@@ -109,9 +109,12 @@ map.on("load", () => {
 
 const handleClick = (e) => {
   e.preventDefault();
-  appDams.active = e.features[0].properties.DAM_NAME.split(
-    " "
-  )[0].toLowerCase();
+  const clickedName = e.features[0].properties.label
+    .split(" ")[0]
+    .toLowerCase();
+  if (dams.map((el) => el.name).includes(clickedName))
+    appDams.active = clickedName;
+  else console.log("This dam hasn't been set up");
 };
 
 // Data stuff
