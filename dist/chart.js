@@ -1,6 +1,20 @@
 /* global Chart */
 
+const conf = (data, direction) => {
+  const s = direction === "up" ? 1 : -1;
+  const power = 0.4;
+  const growth = s * (Math.random() * 0.003 + 0.01);
+  const noise = s * 0.001;
+  return data.map((row, i) => ({
+    x: row.x,
+    y: Math.max(0, row.y * (1 + i ** power * (Math.random() * noise + growth))),
+  }));
+};
+
 export const makeChart = (data, chart) => {
+  const up = conf(data.forecast, "up");
+  const down = conf(data.forecast, "down");
+
   let datasets = [
     {
       label: "Precipitation",
@@ -39,7 +53,7 @@ export const makeChart = (data, chart) => {
     },
     {
       label: "",
-      data: data.forecastUp,
+      data: up,
       fill: "+1",
       lineTension: 0.3,
       borderColor: "rgba(240, 171, 0, 1)",
@@ -52,7 +66,7 @@ export const makeChart = (data, chart) => {
     },
     {
       label: "",
-      data: data.forecastDown,
+      data: down,
       fill: false,
       hidden: false,
       lineTension: 0.3,
