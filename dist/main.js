@@ -120,7 +120,7 @@ const handleClick = (e) => {
 // Data stuff
 const loadData = (fn, parDam = null, parHistory = null) => {
   const url = window.location.href.includes("h2ox")
-    ? new URL("https://h2ox-api.herokuapp.com/api/")
+    ? new URL("https://h2ox-api-kdjsv6lupq-ez.a.run.app//api/")
     : new URL("http://localhost:5111/api/");
   url.searchParams.append("reservoir", parDam || appDams.active);
   url.searchParams.append("date", date);
