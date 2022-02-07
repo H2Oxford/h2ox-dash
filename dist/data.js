@@ -1,6 +1,6 @@
 export const dams = [
   {
-    name: "krishnaraja",
+    name: "krishnaraja_sagar",
     label: "Krishnaraja Sagar",
     max: 1163,
     level: 560,
@@ -40,7 +40,7 @@ export const dams = [
     sel: false,
   },
   {
-    name: "lower",
+    name: "lower_bhawani",
     label: "Lower Bhawani",
     max: 792,
     level: 400,

@@ -141,7 +141,7 @@ const loadData = (fn, parDam = null, parHistory = null) => {
 
 const latest = (data, name) => {
   if (data.historic) {
-    appDams.levels[name] = data.historic.slice(-1)[0].y;
+    appDams.levels[name] = data.historic.slice(-1)[0].volume;
     appDams.futs[name] = data.forecast.slice(-1)[0].y;
   }
 };
