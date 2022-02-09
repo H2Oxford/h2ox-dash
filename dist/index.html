@@ -28,10 +28,9 @@
                 <div>
                     <p class="info"><strong>🙋Choose a reservoir by clicking it on the map, or in the list below.</strong></p>
                     <p>The graph below shows the historical and forecast dam levels in trillion meters cubed for the selected reservoir, with a confidence interval on the forecast.</p>
-                    <p class="info">🙋 Choose the starting date of the forecast below. Today's date makes the most sense, but we include historical dates to see how the models performs in other periods!</p>
                 </div>
-                <div class="date">
-                    <input type="date" id="date" value="2021-09-08" min="2012-01-01" max="2021-09-08">
+                <div id="date">
+                    <span>Last updated: {{ lastUpdate }}</span>
                 </div>
             </div>
             <div class="warnings">

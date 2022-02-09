@@ -36,23 +36,19 @@ body {
     padding: 20px;
 }
 
-#date {
-    padding: 1rem;
-}
-
 .sidebar > div > div > p {
     margin: 5px auto;
     margin-top: 0;
     padding: 0.5rem;
 }
 
-.date {
+#date {
     margin: auto;
     display: flex;
     justify-content: center;
 }
 
-.date > * {
+#date > * {
     display: block;
     margin: auto;
     background-color: #E2E8F0;

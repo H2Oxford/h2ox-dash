@@ -12,6 +12,13 @@ const updateChart = (data) => {
 };
 let date = "2021-09-08";
 
+const appDate = new Vue({ // eslint-disable-line
+  el: "#date",
+  data: {
+    lastUpdate: date,
+  },
+});
+
 // Vue app for dam selectors and info
 const appDams = new Vue({
   el: "#dams",
