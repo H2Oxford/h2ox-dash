@@ -11,7 +11,6 @@ const updateChart = (data) => {
   chart = makeChart(data, chart);
 };
 let date = "2021-09-08";
-let history = 180;
 
 // Vue app for dam selectors and info
 const appDams = new Vue({
@@ -66,16 +65,11 @@ const appChecks = new Vue({
   },
 });
 
-// Date and history depth still managed manually
+// Date still managed manually
 get("date").onchange = (e) => {
   date = e.target.value;
   loadData();
   getAllLevels();
-};
-
-get("history").onchange = (e) => {
-  history = parseInt(e.target.value);
-  loadData();
 };
 
 // Mapbox stuff
@@ -132,16 +126,13 @@ const getHeaders = () => {
 const headers = getHeaders();
 
 const getAllLevels = () => {
-  dams.forEach((d) => {
-    const url = new URL(baseUrl + "levels");
-    url.searchParams.append("reservoir", d.name);
-    fetch(url, {
-      method: "GET",
-      headers: headers,
-    })
-      .then((response) => response.json())
-      .then((data) => latest(data));
-  });
+  const url = new URL(baseUrl + "levels");
+  fetch(url, {
+    method: "GET",
+    headers: headers,
+  })
+    .then((response) => response.json())
+    .then((data) => latest(data));
 };
 
 // Data stuff
@@ -149,7 +140,6 @@ const loadData = () => {
   const url = new URL(baseUrl + "timeseries");
   url.searchParams.append("reservoir", appDams.active);
   url.searchParams.append("date", date);
-  url.searchParams.append("history", history);
 
   fetch(url, {
     method: "GET",

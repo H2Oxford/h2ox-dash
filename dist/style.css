@@ -48,12 +48,13 @@ body {
 
 .date {
     margin: auto;
+    display: flex;
+    justify-content: center;
 }
 
 .date > * {
-    display: inline-block;
+    display: block;
     margin: auto;
-    margin-left: 1rem;
     background-color: #E2E8F0;
     border-color: #E2E8F0;
     border-radius: 10px;
