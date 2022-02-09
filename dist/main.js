@@ -24,7 +24,7 @@ const appDams = new Vue({
   },
   watch: {
     active: function () {
-      loadData(updateChart);
+      loadData();
     },
   },
   computed: {
@@ -69,13 +69,13 @@ const appChecks = new Vue({
 // Date and history depth still managed manually
 get("date").onchange = (e) => {
   date = e.target.value;
-  loadData(updateChart);
-  updateLatest();
+  loadData();
+  getAllLevels();
 };
 
 get("history").onchange = (e) => {
   history = parseInt(e.target.value);
-  loadData(updateChart);
+  loadData();
 };
 
 // Mapbox stuff
@@ -117,41 +117,56 @@ const handleClick = (e) => {
   else console.log("This dam hasn't been set up");
 };
 
-// Data stuff
-const loadData = (fn, parDam = null, parHistory = null) => {
-  const url = window.location.href.includes("h2ox")
-    ? new URL("https://h2ox-api-kdjsv6lupq-ez.a.run.app//api/")
-    : new URL("http://localhost:5111/api/");
-  url.searchParams.append("reservoir", parDam || appDams.active);
-  url.searchParams.append("date", date);
-  url.searchParams.append("history", parHistory || history);
+const baseUrl = window.location.href.includes("h2ox")
+  ? "https://h2ox-api-kdjsv6lupq-ez.a.run.app/api/"
+  : "http://localhost:5111/api/";
 
+const getHeaders = () => {
   let headers = new Headers();
   let username = "wave2web";
   let password = "climateemergency";
   headers.set("Authorization", "Basic " + btoa(username + ":" + password));
+  return headers;
+};
+
+const headers = getHeaders();
+
+const getAllLevels = () => {
+  dams.forEach((d) => {
+    const url = new URL(baseUrl + "levels");
+    url.searchParams.append("reservoir", d.name);
+    fetch(url, {
+      method: "GET",
+      headers: headers,
+    })
+      .then((response) => response.json())
+      .then((data) => latest(data));
+  });
+};
+
+// Data stuff
+const loadData = () => {
+  const url = new URL(baseUrl + "timeseries");
+  url.searchParams.append("reservoir", appDams.active);
+  url.searchParams.append("date", date);
+  url.searchParams.append("history", history);
 
   fetch(url, {
     method: "GET",
     headers: headers,
   })
     .then((response) => response.json())
-    .then((data) => fn(data, parDam));
+    .then((data) => updateChart(data));
 };
 
-const latest = (data, name) => {
-  if (data.historic) {
-    appDams.levels[name] = data.historic.slice(-1)[0].volume;
-    appDams.futs[name] = data.forecast.slice(-1)[0].y;
-  }
-};
-
-const updateLatest = () => {
-  dams.forEach((d) => {
-    loadData(latest, d.name);
+const latest = (data) => {
+  data.forEach((el) => {
+    const name = el.reservoir;
+    appDams.levels[name] = el.volume;
+    appDams.futs[name] = el.forecast;
   });
 };
 
 // Load data on first load
-loadData(updateChart);
-updateLatest();
+loadData();
+getAllLevels();
