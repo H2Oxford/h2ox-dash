@@ -1,3 +1,8 @@
 module.exports = {
-  content: ["./index.html"],
+  content: ["./dist/index.html", "./dist/data.js"],
+  theme: {
+    screens: {
+      sm: { max: "639px" },
+    },
+  },
 };

@@ -17,35 +17,38 @@
         <script src="vendor/chart.js"></script>
         <script src="vendor/moment.js"></script>
         <script src="vendor/chartjs-adapter-moment.js"></script>
-        <link href="vendor/tailwind.css" rel="stylesheet"/>
-        <link rel="icon" href="favicon.ico">
+        <link href="tw.css" rel="stylesheet"/>
         <link href="style.css" rel="stylesheet"/>
+        <link rel="icon" href="favicon.ico">
     </head>
     <body>
-        <div id="body">
-            <div class="sidebar"> <!-- Sidebar -->
+        <div id="body" class="w-screen h-screen flex flex-row bg-teal-50 sm:flex-col">
+            <div class="sidebar overflow-y-scroll flex-shrink-0 w-96 h-screen bg-slate-50 sm:overflow-y-visible sm:w-screen sm:flex-grow sm:h-max">
                 <div class="controls">
-                    <h2 class="title fixed">H<small>2</small>Ox dashboard</h2>
+                    <h2 class="text-3xl font-bold w-full text-amber-400">H<small>2</small>Ox dashboard</h2>
                     <div>
-                        <p class="info"><strong>🙋Choose a reservoir by clicking it on the map, or in the list below.</strong></p>
-                        <p>The graph below shows the historical and forecast dam levels in trillion meters cubed for the selected reservoir, with a confidence interval on the forecast.</p>
+                        <p class="my-2 mx-auto p-2 text-amber-7000"><strong>🙋Choose a reservoir by clicking it on the map, or in the list below.</strong></p>
+                        <p class="my-2 mx-auto p-2">The graph below shows the historical and forecast dam levels in trillion meters cubed for the selected reservoir, with a confidence interval on the forecast.</p>
                     </div>
-                    <div id="date">
-                        <span>Last updated: {{ lastUpdate }}</span>
+                    <div class="m-auto flex justify-center">
+                        <div class="m-auto bg-blue-100 p-4 rounded">Last updated: {{ lastUpdate }}</div>
                     </div>
                 </div>
                 <div class="warnings">
                     <div>
-                        <h2 class="title">Summary</h2>
-                        <p>Numbers show reservoir level for chosen date in million meters cubed (MMC). Any in <strong style="color:red;">red</strong> are below 50% full. Arrows indicate whether the level is increasing or decreasing in the forecast period.</p>
+                        <h2 class="text-3xl font-bold w-full text-amber-400">Summary</h2>
+                        <p class="my-2 mx-auto p-2">Numbers show reservoir level for chosen date in million meters cubed (MMC). Any in <strong style="color:red;">red</strong> are below 50% full. Arrows indicate whether the level is increasing or decreasing in the forecast period.</p>
                     </div>
                     <div >
-                        <div v-for="d in dams" class="res" :class="{ selected: active == d.name }"
-                                               @click="active = d.name">
+                        <div v-for="d in dams"
+                            class="border-2 rounded flex-col cursor-pointer bg-slate-200 m-8 font-bold p-4 hover:bg-green-200 hover:border-green-200"
+                            :class="{ selected: active == d.name }"
+                            @click="active = d.name">
                             <div>{{ d.label }}</div>
-                            <div class="level" :class="{ full: levels[d.name] > d.max * 0.5 }">
+                            <div class="text-red-700 flex flex-row text-3xl" :class="{ full: levels[d.name] > d.max * 0.5 }">
                                 <div>{{ levels[d.name] }} <small>MMC</small></div>
-                                <div class="arrow" :class="{ inc: dirs[d.name] }">
+                                <div class="text-red-700 float-right ml-auto mr-4 text-6xl leading-4"
+                                     :class="{ inc: dirs[d.name] }">
                                     {{ dirSymbs[d.name] }}
                                 </div>
                             </div>
@@ -54,30 +57,31 @@
                 </div>
             </div>
 
-            <div class="main"> <!-- Main container -->
-                <div id="map"></div>
-                <div id="layers"> <!-- Legend -->
+            <div class="main flex flex-row flex-wrap flex-grow p-8"> <!-- Main container -->
+                <div id="layers" class="w-40 bg-white m-8 sm:hidden"> <!-- Legend -->
                     <div>
                         <h2>Layers</h2>
-                        <p class="info">🙋 Toggle layers to get an idea of the network of rivers and reservoirs, and how they relate to basins, rain patterns and large cities.<p>
+                        <p class="text-amber-700">🙋 Toggle layers to get an idea of the network of rivers and reservoirs, and how they relate to basins, rain patterns and large cities.<p>
                     </div>
                     <div>
                         <div v-for="(c, key) in checks">
-                            <input type="checkbox" v-model="c.checked"
-                                                   @change="update(c.layers, c.checked)">
+                            <input type="checkbox"
+                                   v-model="c.checked"
+                                   @change="update(c.layers, c.checked)">
                             <span :class="c.class"
-                                                   :style="c.style">
+                                  :style="c.style">
                             </span>
                             <span class="align-middle">{{ c.label }}</span>
                         </div>
                     </div>
                 </div>
-                <div id="outer-chart-container">
-                    <div id="chart-container">
-                        <p class="info">🙋 Click the legend icons to hide lines from the chart, and hover the lines to get the values.</p>
+                <div id="outer-chart-container" class="relative w-2/3 m-8 bg-white sm:h-[40vh] sm:w-screen">
+                    <div id="chart-container" class="h-9/10 p-1 absolute inset-0">
+                        <p class="text-amber-700">🙋 Click the legend icons to hide lines from the chart, and hover the lines to get the values.</p>
                         <canvas id="chart"></canvas>
                     </div>
                 </div>
+                <div id="map" class="h-1/3 w-full m-8 sm:h-[40vh] sm:w-screen"></div>
             </div>
         </div>
         <script type="module" src="main.js"></script>
