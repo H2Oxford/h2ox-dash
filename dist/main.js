@@ -38,22 +38,16 @@ const loadData = (activeReservoir) => {
     .then((data) => updateChart(data));
 };
 
-// eslint-disable-next-line
-const appDate = new Vue({
-  el: "#date",
-  data: {
-    lastUpdate: date,
-  },
-});
-
 // Vue app for dam selectors and info
-const appDams = new Vue({
-  el: "#dams",
+const app = new Vue({
+  el: "#body",
   data: {
     dams: dams,
     active: dams[0].name,
     levels: dams.reduce((acc, el) => ((acc[el.name] = el.level), acc), {}),
     futs: dams.reduce((acc, el) => ((acc[el.name] = el.fut), acc), {}),
+    checks: checkBoxes,
+    lastUpdate: date,
   },
   computed: {
     dirs: function () {
@@ -80,6 +74,14 @@ const appDams = new Vue({
       loadData(this.active);
     },
   },
+  methods: {
+    update: function (layers, checked) {
+      layers.forEach((lay) => {
+        // eslint-disable-next-line no-use-before-define
+        map.setLayoutProperty(lay, "visibility", checked ? "visible" : "none");
+      });
+    },
+  },
 });
 
 mapboxgl.accessToken =
@@ -95,28 +97,12 @@ const map = new mapboxgl.Map({
 map.dragRotate.disable();
 map.touchZoomRotate.disableRotation();
 
-// Vue app for map layer check boxes
-// eslint-disable-next-line no-unused-vars
-const appChecks = new Vue({
-  el: "#layers",
-  data: {
-    checks: checkBoxes,
-  },
-  methods: {
-    update: function (layers, checked) {
-      layers.forEach((lay) => {
-        map.setLayoutProperty(lay, "visibility", checked ? "visible" : "none");
-      });
-    },
-  },
-});
-
 const getAllLevels = () => {
   const latest = (data) => {
     data.forEach((el) => {
       const name = el.reservoir;
-      appDams.levels[name] = el.volume;
-      appDams.futs[name] = el.forecast;
+      app.levels[name] = el.volume;
+      app.futs[name] = el.forecast;
     });
   };
 
@@ -136,7 +122,7 @@ const handleClick = (e) => {
   e.preventDefault();
   const clickedName = e.features[0].properties.name;
   if (dams.map((el) => el.name).includes(clickedName))
-    appDams.active = clickedName;
+    app.active = clickedName;
 };
 
 map.on("load", () => {
@@ -148,5 +134,5 @@ map.on("load", () => {
 });
 
 // Load data on first load
-loadData(appDams.active);
+loadData(app.active);
 getAllLevels();
