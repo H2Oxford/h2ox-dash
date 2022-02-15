@@ -1,6 +1,6 @@
 /* global Vue mapboxgl */
 
-import { makeChart } from "./chart.js";
+import makeChart from "./chart.js";
 import { dams, checkBoxes } from "./data.js";
 
 // Global variables and helpers
