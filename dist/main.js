@@ -1,6 +1,6 @@
-/* global Vue mapboxgl */
+/* global Vue mapboxgl Chart */
 
-import makeChart from "./chart.js";
+import { makeChart, trendLineConfig } from "./chart.js";
 import { dams, checkBoxes } from "./data.js";
 
 // Global variables and helpers
@@ -24,7 +24,7 @@ const getHeaders = () => {
   return headers;
 };
 
-const headers = getHeaders();
+const fetchOptions = { method: "GET", headers: getHeaders() };
 
 const loadData = (activeReservoir) => {
   const urlForecast = new URL(`${baseUrl}forecast`);
@@ -33,13 +33,42 @@ const loadData = (activeReservoir) => {
     url.searchParams.append("reservoir", activeReservoir);
     url.searchParams.append("date", date);
   });
-  const fetchOptions = { method: "GET", headers: headers };
 
   Promise.all([
     fetch(urlForecast, fetchOptions).then((resp) => resp.json()),
     fetch(urlHistoric, fetchOptions).then((resp) => resp.json()),
   ]).then((data) => updateChart(data));
 };
+
+
+Vue.component("Trend", {
+  props: {
+    data: {
+      type: Array,
+      default: function () {
+        return [1, 2, 3, 2];
+      },
+    },
+  },
+  watch: {
+    data: function () {
+      this.makeChart();
+    },
+  },
+  methods: {
+    makeChart() {
+      const canvas = this.$refs.canvas.getContext("2d");
+      const config = trendLineConfig(this.data);
+      // eslint-disable-next-line
+      new Chart(canvas, config);
+    },
+  },
+  template: `
+    <div>
+      <canvas ref="canvas"></canvas>
+    </div>
+  `,
+});
 
 // Vue app for dam selectors and info
 const app = new Vue({
@@ -51,6 +80,7 @@ const app = new Vue({
     futs: dams.reduce((acc, el) => ((acc[el.name] = el.fut), acc), {}),
     checks: checkBoxes,
     lastUpdate: date,
+    fc: dams.reduce((acc, el) => ((acc[el.name] = []), acc), {}),
   },
   computed: {
     dirs: function () {
@@ -102,20 +132,26 @@ map.touchZoomRotate.disableRotation();
 
 const getAllLevels = () => {
   const latest = (data) => {
-    data.forEach((el) => {
+    const [levels, forecasts] = data;
+    levels.forEach((el) => {
       const name = el.reservoir;
       app.levels[name] = el.volume;
       app.futs[name] = el.forecast;
     });
+    forecasts.forEach((el) => {
+      const fc = el.forecast.map((f) => f.y);
+      app.fc[el.reservoir] = fc;
+    });
   };
 
-  const url = new URL(`${baseUrl}levels`);
-  fetch(url, {
-    method: "GET",
-    headers: headers,
-  })
-    .then((resp) => resp.json())
-    .then((data) => latest(data));
+  const urlLevels = new URL(`${baseUrl}levels`);
+  const urlForecasts = new URL(`${baseUrl}forecasts`);
+  urlForecasts.searchParams.append("date", app.lastUpdate);
+
+  Promise.all([
+    fetch(urlLevels, fetchOptions).then((resp) => resp.json()),
+    fetch(urlForecasts, fetchOptions).then((resp) => resp.json()),
+  ]).then((data) => latest(data));
 };
 
 const pointer = () => (map.getCanvas().style.cursor = "pointer");

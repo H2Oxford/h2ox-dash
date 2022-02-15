@@ -26,7 +26,7 @@
 
             <!--Sidebar-->
             <div class="flex flex-col flex-shrink-0 w-96 h-screen bg-slate-50 drop-shadow-xl
-                           sm:overflow-y-visible sm:w-screen sm:flex-grow sm:h-max">
+                                sm:overflow-y-visible sm:w-screen sm:flex-grow sm:h-max">
 
                 <!--Intro section-->
                 <div>
@@ -43,7 +43,9 @@
                         </p>
                     </div>
                     <div class="m-auto flex justify-center">
-                        <div class="m-auto bg-blue-100 p-4 rounded">Last updated: {{ lastUpdate }}</div>
+                        <div class="m-auto bg-blue-100 p-4 rounded">
+                            Last updated: {{ lastUpdate }}
+                        </div>
                     </div>
                 </div>
 
@@ -59,7 +61,7 @@
                         </p>
                         <div class="py-4 relative mx-auto text-gray-600 flex">
                             <input class="border-2 border-gray-300 bg-white h-10 px-5 pr-16
-                                           rounded-lg text-sm focus:outline-none mx-auto"
+                                                rounded-lg text-sm focus:outline-none mx-auto"
                                    type="search" name="search" placeholder="Search">
                         </div>
                     </div>
@@ -67,17 +69,22 @@
                     <!--Scrolling reservoir list-->
                     <div class="overflow-y-scroll flex-grow h-full">
                         <div v-for="d in dams"
-                             class="border-2 rounded flex-col cursor-pointer bg-slate-200 m-4 font-bold
-                                      p-2 hover:bg-green-200 hover:border-green-200"
-                             :class="{ selected: active == d.name }"
+                             class="border-2 rounded flex flex-row items-center cursor-pointer bg-slate-200 m-4 font-bold
+                                           p-2 hover:bg-amber-200 hover:border-amber-200"
+                             :class="{ 'bg-amber-400 border-amber-400': active == d.name }"
                              @click="active = d.name">
-                            <div>{{ d.label }}</div>
-                            <div class="text-red-700 flex flex-row text-3xl" :class="{ full: levels[d.name] > d.max * 0.5 }">
-                                <div>{{ levels[d.name] }} <small>MMC</small></div>
-                                <div class="text-red-700 float-right ml-auto mr-4 text-4xl leading-4"
-                                     :class="{ inc: dirs[d.name] }">
-                                    {{ dirSymbs[d.name] }}
+                            <div class="flex flex-col">
+                                <div>{{ d.label }}</div>
+                                <div class="text-red-700 text-3xl" :class="{ 'text-green-700': levels[d.name] > d.max * 0.5 }">
+                                    {{ levels[d.name] }} <small>MMC</small>
                                 </div>
+                            </div>
+                            <div class="text-red-700 float-right ml-auto mr-4 text-4xl leading-4"
+                                 :class="{ 'text-green-700': dirs[d.name] }">
+                                {{ dirSymbs[d.name] }}
+                            </div>
+                            <div class="h-10 w-20">
+                                <Trend :data="fc[d.name]"></Trend>
                             </div>
                         </div>
                     </div>
@@ -101,24 +108,34 @@
                 <!--Map-->
                 <div id="map" class=" sm:hidden flex-grow m-4 rounded-xl drop-shadow-xl"></div>
 
-                <!--Layers-->
-                <div id="layers" class="sm:hidden h-min w-80 bg-white m-4 p-8 rounded-xl drop-shadow-xl">
-                    <div>
-                        <h2>Layers</h2>
-                        <p class="text-amber-600">
-                        🙋 Toggle layers to get an idea of the network of rivers and reservoirs,
-                        and how they relate to basins, rain patterns and large cities.
-                        <p>
+                <!--Layers and extra box-->
+                <div class="flex flex-col">
+                    <!--Layers-->
+                    <div class="sm:hidden h-min w-80 bg-white m-4 p-8 rounded-xl drop-shadow-xl">
+                        <div>
+                            <h2>Layers</h2>
+                            <p class="text-amber-600">
+                            🙋 Toggle layers to get an idea of the network of rivers and reservoirs,
+                            and how they relate to basins, rain patterns and large cities.
+                            <p>
+                        </div>
+                        <div>
+                            <div v-for="(c, key) in checks">
+                                <input type="checkbox"
+                                       v-model="c.checked"
+                                       @change="update(c.layers, c.checked)">
+                                <span :class="c.class"
+                                       :style="c.style">
+                                </span>
+                                <span class="align-middle">{{ c.label }}</span>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <div v-for="(c, key) in checks">
-                            <input type="checkbox"
-                                   v-model="c.checked"
-                                   @change="update(c.layers, c.checked)">
-                            <span :class="c.class"
-                                   :style="c.style">
-                            </span>
-                            <span class="align-middle">{{ c.label }}</span>
+
+                    <!--Extra box-->
+                    <div class="bg-white m-4 p-8 rounded-xl drop-shadow-xl">
+                        <div class="">
+                            INFO HERE
                         </div>
                     </div>
                 </div>
