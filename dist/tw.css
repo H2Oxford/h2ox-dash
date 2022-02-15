@@ -500,14 +500,14 @@ a {
   margin: 1rem;
 }
 
-.my-2 {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
+}
+
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .ml-auto {
@@ -546,12 +546,6 @@ a {
   height: 100%;
 }
 
-.h-min {
-  height: -webkit-min-content;
-  height: -moz-min-content;
-  height: min-content;
-}
-
 .h-4 {
   height: 1rem;
 }
@@ -560,16 +554,58 @@ a {
   height: 0.25rem;
 }
 
+.h-max {
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+}
+
+.max-h-\[50vh\] {
+  max-height: 50vh;
+}
+
+.max-h-\[max-content\] {
+  max-height: -webkit-max-content;
+  max-height: -moz-max-content;
+  max-height: max-content;
+}
+
+.max-h-max {
+  max-height: -webkit-max-content;
+  max-height: -moz-max-content;
+  max-height: max-content;
+}
+
+.max-h-full {
+  max-height: 100%;
+}
+
+.max-h-\[calc\(100\%-1rem\)\] {
+  max-height: calc(100% - 1rem);
+}
+
+.max-h-\[calc\(100\%-2rem\)\] {
+  max-height: calc(100% - 2rem);
+}
+
 .min-h-0 {
   min-height: 0px;
+}
+
+.min-h-\[30vh\] {
+  min-height: 30vh;
+}
+
+.min-h-\[100px\] {
+  min-height: 100px;
 }
 
 .w-screen {
   width: 100vw;
 }
 
-.w-96 {
-  width: 24rem;
+.w-80 {
+  width: 20rem;
 }
 
 .w-full {
@@ -580,8 +616,8 @@ a {
   width: 5rem;
 }
 
-.w-80 {
-  width: 20rem;
+.w-1\/4 {
+  width: 25%;
 }
 
 .w-max {
@@ -602,6 +638,10 @@ a {
   flex-grow: 1;
 }
 
+.grow {
+  flex-grow: 1;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -616,10 +656,6 @@ a {
 
 .flex-col {
   flex-direction: column;
-}
-
-.flex-wrap {
-  flex-wrap: wrap;
 }
 
 .items-center {
@@ -693,27 +729,23 @@ a {
   padding: 1rem;
 }
 
-.p-8 {
-  padding: 2rem;
-}
-
 .p-1 {
   padding: 0.25rem;
-}
-
-.py-4 {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
-
-.px-5 {
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
 }
 
 .py-2 {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
 }
 
 .pt-4 {
@@ -732,14 +764,14 @@ a {
   vertical-align: middle;
 }
 
-.text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
-}
-
 .text-sm {
   font-size: 0.875rem;
   line-height: 1.25rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
 }
 
 .text-4xl {
@@ -765,14 +797,14 @@ a {
   color: rgb(217 119 6 / var(--tw-text-opacity));
 }
 
-.text-gray-600 {
-  --tw-text-opacity: 1;
-  color: rgb(75 85 99 / var(--tw-text-opacity));
-}
-
 .text-red-700 {
   --tw-text-opacity: 1;
   color: rgb(185 28 28 / var(--tw-text-opacity));
+}
+
+.text-gray-600 {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity));
 }
 
 .text-green-700 {
@@ -813,6 +845,10 @@ a {
 
   .sm\:w-screen {
     width: 100vw;
+  }
+
+  .sm\:w-full {
+    width: 100%;
   }
 
   .sm\:flex-grow {
