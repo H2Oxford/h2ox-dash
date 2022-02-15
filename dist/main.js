@@ -6,7 +6,8 @@ import { dams, checkBoxes } from "./data.js";
 // Global variables and helpers
 let chart;
 const updateChart = (data) => {
-  chart = makeChart(data, chart);
+  const [forecast, historic] = data;
+  chart = makeChart(chart, forecast, historic);
 };
 const date = "2021-09-08";
 
@@ -26,16 +27,18 @@ const getHeaders = () => {
 const headers = getHeaders();
 
 const loadData = (activeReservoir) => {
-  const url = new URL(`${baseUrl}timeseries`);
-  url.searchParams.append("reservoir", activeReservoir);
-  url.searchParams.append("date", date);
+  const urlForecast = new URL(`${baseUrl}forecast`);
+  const urlHistoric = new URL(`${baseUrl}historic`);
+  [urlForecast, urlHistoric].forEach((url) => {
+    url.searchParams.append("reservoir", activeReservoir);
+    url.searchParams.append("date", date);
+  });
+  const fetchOptions = { method: "GET", headers: headers };
 
-  fetch(url, {
-    method: "GET",
-    headers: headers,
-  })
-    .then((response) => response.json())
-    .then((data) => updateChart(data));
+  Promise.all([
+    fetch(urlForecast, fetchOptions).then((resp) => resp.json()),
+    fetch(urlHistoric, fetchOptions).then((resp) => resp.json()),
+  ]).then((data) => updateChart(data));
 };
 
 // Vue app for dam selectors and info
@@ -111,7 +114,7 @@ const getAllLevels = () => {
     method: "GET",
     headers: headers,
   })
-    .then((response) => response.json())
+    .then((resp) => resp.json())
     .then((data) => latest(data));
 };
 
@@ -121,8 +124,7 @@ const nopointer = () => (map.getCanvas().style.cursor = "");
 const handleClick = (e) => {
   e.preventDefault();
   const clickedName = e.features[0].properties.name;
-  if (dams.map((el) => el.name).includes(clickedName))
-    app.active = clickedName;
+  if (dams.map((el) => el.name).includes(clickedName)) app.active = clickedName;
 };
 
 map.on("load", () => {

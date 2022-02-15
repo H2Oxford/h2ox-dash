@@ -12,14 +12,14 @@ const conf = (data, direction) => {
   }));
 };
 
-export default (data, chart) => {
-  const up = conf(data.forecast, "up");
-  const down = conf(data.forecast, "down");
+export default (chart, forecast, historic) => {
+  const up = conf(forecast, "up");
+  const down = conf(forecast, "down");
 
   const datasets = [
     {
       label: "Precipitation",
-      data: data.historic.map((el) => ({ x: el.x, y: el.precip })),
+      data: historic.map((el) => ({ x: el.x, y: el.precip })),
       fill: false,
       lineTension: 0.3,
       borderColor: "rgba(0, 11, 200, 1)",
@@ -32,7 +32,7 @@ export default (data, chart) => {
     },
     {
       label: "Volume",
-      data: data.historic.map((el) => ({ x: el.x, y: el.volume })),
+      data: historic.map((el) => ({ x: el.x, y: el.volume })),
       fill: true,
       lineTension: 0.3,
       borderColor: "rgba(151, 189, 61, 1)",
@@ -43,7 +43,7 @@ export default (data, chart) => {
     },
     {
       label: "Forecast",
-      data: data.forecast,
+      data: forecast,
       fill: false,
       lineTension: 0.3,
       borderColor: "rgba(240, 171, 0, 1)",
