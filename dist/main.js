@@ -44,9 +44,7 @@ Vue.component("Trend", {
   props: {
     data: {
       type: Array,
-      default: function () {
-        return [1, 2, 3, 2];
-      },
+      default: () => [],
     },
   },
   watch: {
@@ -64,7 +62,7 @@ Vue.component("Trend", {
   },
   template: `
     <div>
-      <canvas ref="canvas"></canvas>
+      <canvas ref="canvas" width="0" height="0"></canvas>
     </div>
   `,
 });
