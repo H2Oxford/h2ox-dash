@@ -22,32 +22,59 @@
         <link rel="icon" href="favicon.ico">
     </head>
     <body>
-        <div id="body" class="w-screen h-screen flex flex-row bg-teal-50 sm:flex-col">
-            <div class="sidebar overflow-y-scroll flex-shrink-0 w-96 h-screen bg-slate-50 sm:overflow-y-visible sm:w-screen sm:flex-grow sm:h-max">
-                <div class="controls">
-                    <h2 class="text-3xl font-bold w-full text-amber-400">H<small>2</small>Ox dashboard</h2>
+        <div id="body" class="w-screen h-screen flex flex-row bg-slate-200 sm:flex-col">
+
+            <!--Sidebar-->
+            <div class="flex flex-col flex-shrink-0 w-96 h-screen bg-slate-50 drop-shadow-xl
+                           sm:overflow-y-visible sm:w-screen sm:flex-grow sm:h-max">
+
+                <!--Intro section-->
+                <div>
+                    <h2 class="text-3xl font-bold w-full text-amber-600 text-center py-4">
+                        H<small>2</small>Ox dashboard
+                    </h2>
                     <div>
-                        <p class="my-2 mx-auto p-2 text-amber-7000"><strong>🙋Choose a reservoir by clicking it on the map, or in the list below.</strong></p>
-                        <p class="my-2 mx-auto p-2">The graph below shows the historical and forecast dam levels in trillion meters cubed for the selected reservoir, with a confidence interval on the forecast.</p>
+                        <p class="my-2 mx-auto p-2 text-amber-600">
+                        <strong>🙋Choose a reservoir by clicking it on the map, or in the list below.</strong>
+                        </p>
+                        <p class="my-2 mx-auto p-2">
+                        The graph below shows the historical and forecast dam levels in trillion
+                        meters cubed for the selected reservoir, with a confidence interval on the forecast.
+                        </p>
                     </div>
                     <div class="m-auto flex justify-center">
                         <div class="m-auto bg-blue-100 p-4 rounded">Last updated: {{ lastUpdate }}</div>
                     </div>
                 </div>
-                <div class="warnings">
+
+                <!--Reservoirs list-->
+                <div class="flex flex-col min-h-0">
+                    <!--Reservoirs intro-->
                     <div>
-                        <h2 class="text-3xl font-bold w-full text-amber-400">Summary</h2>
-                        <p class="my-2 mx-auto p-2">Numbers show reservoir level for chosen date in million meters cubed (MMC). Any in <strong style="color:red;">red</strong> are below 50% full. Arrows indicate whether the level is increasing or decreasing in the forecast period.</p>
+                        <h2 class="text-3xl font-bold w-full text-amber-600 text-center pt-4">Reservoirs</h2>
+                        <p class="my-2 mx-auto p-2">
+                        Numbers show reservoir level for chosen date in million meters cubed (MMC).
+                        Any in <strong style="color:red;">red</strong> are below 50% full.
+                        Arrows indicate whether the level is increasing or decreasing in the forecast period.
+                        </p>
+                        <div class="py-4 relative mx-auto text-gray-600 flex">
+                            <input class="border-2 border-gray-300 bg-white h-10 px-5 pr-16
+                                           rounded-lg text-sm focus:outline-none mx-auto"
+                                   type="search" name="search" placeholder="Search">
+                        </div>
                     </div>
-                    <div >
+
+                    <!--Scrolling reservoir list-->
+                    <div class="overflow-y-scroll flex-grow h-full">
                         <div v-for="d in dams"
-                            class="border-2 rounded flex-col cursor-pointer bg-slate-200 m-8 font-bold p-4 hover:bg-green-200 hover:border-green-200"
-                            :class="{ selected: active == d.name }"
-                            @click="active = d.name">
+                             class="border-2 rounded flex-col cursor-pointer bg-slate-200 m-4 font-bold
+                                      p-2 hover:bg-green-200 hover:border-green-200"
+                             :class="{ selected: active == d.name }"
+                             @click="active = d.name">
                             <div>{{ d.label }}</div>
                             <div class="text-red-700 flex flex-row text-3xl" :class="{ full: levels[d.name] > d.max * 0.5 }">
                                 <div>{{ levels[d.name] }} <small>MMC</small></div>
-                                <div class="text-red-700 float-right ml-auto mr-4 text-6xl leading-4"
+                                <div class="text-red-700 float-right ml-auto mr-4 text-4xl leading-4"
                                      :class="{ inc: dirs[d.name] }">
                                     {{ dirSymbs[d.name] }}
                                 </div>
@@ -57,11 +84,31 @@
                 </div>
             </div>
 
-            <div class="main flex flex-row flex-wrap flex-grow p-8"> <!-- Main container -->
-                <div id="layers" class="w-40 bg-white m-8 sm:hidden"> <!-- Legend -->
+            <!--Main dashboard area-->
+            <div class="main flex flex-row flex-wrap flex-grow p-4">
+                <!--Chart-->
+                <div class="sm:hidden w-full bg-white m-4 p-8 rounded-xl drop-shadow-xl">
+                    <div class="relative h-full">
+                        <div id="chart-container" class="h-9/10 p-1 absolute inset-0">
+                            <p class="text-amber-600">
+                            🙋 Click the legend icons to hide lines from the chart, and hover the lines to get the values.
+                            </p>
+                            <canvas id="chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Map-->
+                <div id="map" class=" sm:hidden flex-grow m-4 rounded-xl drop-shadow-xl"></div>
+
+                <!--Layers-->
+                <div id="layers" class="sm:hidden h-min w-80 bg-white m-4 p-8 rounded-xl drop-shadow-xl">
                     <div>
                         <h2>Layers</h2>
-                        <p class="text-amber-700">🙋 Toggle layers to get an idea of the network of rivers and reservoirs, and how they relate to basins, rain patterns and large cities.<p>
+                        <p class="text-amber-600">
+                        🙋 Toggle layers to get an idea of the network of rivers and reservoirs,
+                        and how they relate to basins, rain patterns and large cities.
+                        <p>
                     </div>
                     <div>
                         <div v-for="(c, key) in checks">
@@ -69,19 +116,12 @@
                                    v-model="c.checked"
                                    @change="update(c.layers, c.checked)">
                             <span :class="c.class"
-                                  :style="c.style">
+                                   :style="c.style">
                             </span>
                             <span class="align-middle">{{ c.label }}</span>
                         </div>
                     </div>
                 </div>
-                <div id="outer-chart-container" class="relative w-2/3 m-8 bg-white sm:hidden">
-                    <div id="chart-container" class="h-9/10 p-1 absolute inset-0">
-                        <p class="text-amber-700">🙋 Click the legend icons to hide lines from the chart, and hover the lines to get the values.</p>
-                        <canvas id="chart"></canvas>
-                    </div>
-                </div>
-                <div id="map" class="h-1/3 w-full m-8 sm:hidden"></div>
             </div>
         </div>
         <script type="module" src="main.js"></script>
