@@ -1,4 +1,5 @@
 /* global Chart */
+/* eslint no-param-reassign: 0 */
 
 const conf = (data, direction) => {
   const s = direction === "up" ? 1 : -1;
@@ -11,11 +12,11 @@ const conf = (data, direction) => {
   }));
 };
 
-export const makeChart = (data, chart) => {
+export default (data, chart) => {
   const up = conf(data.forecast, "up");
   const down = conf(data.forecast, "down");
 
-  let datasets = [
+  const datasets = [
     {
       label: "Precipitation",
       data: data.historic.map((el) => ({ x: el.x, y: el.precip })),
@@ -79,7 +80,7 @@ export const makeChart = (data, chart) => {
     },
   ];
 
-  if (chart == undefined) {
+  if (chart === undefined) {
     chart = new Chart("chart", {
       type: "line",
       data: { datasets: datasets },
