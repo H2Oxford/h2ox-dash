@@ -40,7 +40,6 @@ const loadData = (activeReservoir) => {
   ]).then((data) => updateChart(data));
 };
 
-
 Vue.component("Trend", {
   props: {
     data: {
@@ -81,8 +80,17 @@ const app = new Vue({
     checks: checkBoxes,
     lastUpdate: date,
     fc: dams.reduce((acc, el) => ((acc[el.name] = []), acc), {}),
+    search: "",
   },
   computed: {
+    searchLow: function () {
+      return this.search.toLowerCase();
+    },
+    includeRes: function () {
+      return this.dams
+        .filter((d) => d.name.toLowerCase().includes(this.searchLow))
+        .map((d) => d.name);
+    },
     dirs: function () {
       return this.dams.reduce(
         (acc, el) => (
