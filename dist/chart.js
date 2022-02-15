@@ -12,7 +12,7 @@ const conf = (data, direction) => {
   }));
 };
 
-export default (chart, forecast, historic) => {
+export const makeChart = (chart, forecast, historic) => {
   const up = conf(forecast, "up");
   const down = conf(forecast, "down");
 
@@ -158,4 +158,51 @@ export default (chart, forecast, historic) => {
     chart.update({ duration: 0 });
   }
   return chart;
+};
+
+export const trendLineConfig = (data) => {
+  const increasing = data.slice(-1)[0] - data[0] >= 0;
+  const color = increasing ? "rgb(21, 128, 61)" : "rgb(185, 28, 28)";
+  const dataset = {
+    labels: Array(data.length)
+      .fill()
+      .map((_, i) => i),
+    datasets: [
+      {
+        label: "",
+        data: data,
+        fill: false,
+        borderColor: color,
+        tension: 0.1,
+        radius: 0,
+      },
+    ],
+  };
+
+  const config = {
+    type: "line",
+    data: dataset,
+    options: {
+      plugins: {
+        legend: {
+          display: false,
+        },
+        tooltip: {
+          enabled: false,
+        },
+      },
+      layout: {
+        padding: 4,
+      },
+      scales: {
+        x: {
+          display: false,
+        },
+        y: {
+          display: false,
+        },
+      },
+    },
+  };
+  return config;
 };
