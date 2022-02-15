@@ -25,7 +25,7 @@
 
             <!--Sidebar-->
             <div class="flex flex-col flex-shrink-0 w-96 h-screen bg-slate-50 drop-shadow-xl
-                                sm:overflow-y-visible sm:w-screen sm:flex-grow sm:h-max">
+                                   sm:overflow-y-visible sm:w-screen sm:flex-grow sm:h-max">
 
                 <!--Intro section-->
                 <div>
@@ -60,7 +60,7 @@
                         </p>
                         <div class="py-4 relative mx-auto text-gray-600 flex">
                             <input class="border-2 border-gray-300 bg-white h-10 px-5 pr-16
-                                                rounded-lg text-sm focus:outline-none mx-auto"
+                                                   rounded-lg text-sm focus:outline-none mx-auto"
                                    type="search" name="search" placeholder="Search" v-model="search">
                         </div>
                     </div>
@@ -68,10 +68,10 @@
                     <!--Scrolling reservoir list-->
                     <div class="overflow-y-scroll flex-grow h-full">
                         <div v-for="d in dams" v-show="includeRes.includes(d.name)"
-                             class="border-2 rounded flex flex-row items-center cursor-pointer bg-slate-200 m-4 font-bold
-                                           p-2 hover:bg-amber-200 hover:border-amber-200"
-                             :class="{ 'bg-amber-400 border-amber-400': active == d.name }"
-                             @click="active = d.name">
+                                               class="border-2 rounded flex flex-row items-center cursor-pointer bg-slate-200 m-4 font-bold
+                                                        p-2 hover:bg-amber-200 hover:border-amber-200"
+                                               :class="{ 'bg-amber-400 border-amber-400': active == d.name }"
+                                               @click="active = d.name">
                             <div class="flex flex-col">
                                 <div>{{ d.label }}</div>
                                 <div class="text-red-700 text-3xl" :class="{ 'text-green-700': levels[d.name] > d.max * 0.5 }">
@@ -112,7 +112,7 @@
                     <!--Layers-->
                     <div class="sm:hidden h-min w-80 bg-white m-4 p-8 rounded-xl drop-shadow-xl">
                         <div>
-                            <h2>Layers</h2>
+                            <h2 class="text-xl mb-2">Layers</h2>
                             <p class="text-amber-600">
                             🙋 Toggle layers to get an idea of the network of rivers and reservoirs,
                             and how they relate to basins, rain patterns and large cities.
@@ -132,10 +132,44 @@
                     </div>
 
                     <!--Extra box-->
-                    <div class="bg-white m-4 p-8 rounded-xl drop-shadow-xl">
-                        <div class="">
-                            INFO HERE
-                        </div>
+                    <div class="bg-white w-80 m-4 p-8 rounded-xl drop-shadow-xl text-sm">
+                        <h2 class="text-xl mb-2">About</h2>
+                        <p>
+                        H<small>2</small>Ox is a group of data scientists and hydrologists:
+                        <ul class="list-none mx-auto w-max py-2">
+                            <li>
+                                <a href="https://www.linkedin.com/in/lucaskruitwagen/">
+                                    Lucas Kruitwagen
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.linkedin.com/in/chris-arderne/">
+                                    Chris Arderne
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    Tommy Lees
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.linkedin.com/in/lisathalheimer/">
+                                    Lisa Thalheimer
+                                </a>
+                            </li>
+                        </ul>
+                        <p class="my-2">
+                        We won the 
+                        <a href="https://wri-india.org/news/release-wri-india-announces-winners-wave2web-hackathon-aims-develop-predictive-models-estimate">
+                            WRI Wave2Web hackathon
+                        </a>,
+                        and continue to develop open source,
+                        and open data resources that support planning and water conservation.
+                        </p>
+                        <p class="my-2">
+                        Most of our code is available at our
+                        <a href="https://github.com/H2Oxford">GitHub repository</a>.
+                        <p>
                     </div>
                 </div>
             </div>
