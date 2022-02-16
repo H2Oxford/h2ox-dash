@@ -25,7 +25,7 @@
 
             <!--Sidebar-->
             <div class="flex flex-col flex-shrink-0 w-80 h-screen bg-slate-50 drop-shadow-xl
-                                           sm:overflow-y-visible sm:w-screen sm:flex-grow sm:h-max">
+                        sm:overflow-y-visible sm:w-screen sm:flex-grow sm:h-max">
 
                 <!--Intro section-->
                 <div>
@@ -33,9 +33,16 @@
                         H<small>2</small>Ox dashboard
                     </h2>
                     <div>
-                        <p class="mx-auto p-2 px-4 text-amber-600">
+                        <p class="sm:hidden mx-auto p-2 px-4 text-amber-600">
                         <strong>🙋Choose a reservoir by clicking it on the map, or in the list below.</strong>
                         </p>
+
+                        <!--Shown on mobile only-->
+                        <p class="sm:block hidden my-2 mx-auto p-2 px-4">
+                        Scroll down to learn about the project, visit with a bigger screen
+                        for the full experience!
+                        </p>
+
                         <p class="sm:hidden my-2 mx-auto p-2 px-4">
                         The graph to the right shows historical and forecast data,
                         while the map displays important contextual information.
@@ -58,18 +65,19 @@
                         </p>
                         <div class="py-2 relative mx-auto text-gray-600 flex">
                             <input class="border-2 border-gray-300 bg-white h-10 px-5 pr-16
-                                                           rounded-lg focus:outline-none mx-auto"
+                                          rounded-lg focus:outline-none mx-auto"
                                    type="search" name="search" placeholder="Search" v-model="search">
                         </div>
                     </div>
 
                     <!--Scrolling reservoir list-->
                     <div class="overflow-y-scroll flex-grow h-full">
-                        <div v-for="d in dams" v-show="includeRes.includes(d.name)"
-                                               class="border-2 rounded flex flex-row items-center cursor-pointer bg-slate-200 m-4 font-bold
-                                                                p-2 hover:bg-amber-200 hover:border-amber-200"
-                                               :class="{ 'bg-amber-400 border-amber-400': active == d.name }"
-                                               @click="active = d.name">
+                        <div v-for="d in dams"
+                             v-show="includeRes.includes(d.name)"
+                             class="border-2 rounded flex flex-row items-center cursor-pointer bg-slate-200
+                                    m-4 font-bold p-2 hover:bg-amber-200 hover:border-amber-200"
+                             :class="{ 'bg-amber-400 border-amber-400': active == d.name }"
+                             @click="active = d.name">
                             <div class="flex flex-col">
                                 <div>{{ d.label }}</div>
                                 <div class="text-red-700 text-2xl"
@@ -97,7 +105,8 @@
                         <div class="relative h-full">
                             <div id="chart-container" class="h-full p-1 absolute inset-0">
                                 <p class="text-amber-600">
-                                🙋 Click the legend icons to hide lines from the chart, and hover the lines to get the values.
+                                🙋 Click the legend icons to hide lines from the chart,
+                                and hover the lines to get the values.
                                 </p>
                                 <canvas id="chart"></canvas>
                             </div>
@@ -105,7 +114,8 @@
                     </div>
 
                     <!--About box-->
-                    <div class="sm:w-full h-max max-h-[calc(100%-2rem)] flex flex-col bg-white w-1/4 m-4 p-4 rounded-xl drop-shadow-xl">
+                    <div class="sm:w-full h-max max-h-[calc(100%-2rem)] flex flex-col bg-white
+                                w-1/4 m-4 p-4 rounded-xl drop-shadow-xl">
                         <h2 class="text-xl mb-2">About</h2>
                         <div class="overflow-y-scroll">
                             <p>
@@ -152,7 +162,8 @@
                 <div class="flex flex-row min-h-[100px] w-full grow">
 
                     <!--Layers-->
-                    <div class="sm:hidden flex flex-col h-max max-h-[calc(100%-2rem)] w-80 bg-white m-4 p-4 rounded-xl drop-shadow-xl">
+                    <div class="sm:hidden flex flex-col h-max max-h-[calc(100%-2rem)]
+                                w-80 bg-white m-4 p-4 rounded-xl drop-shadow-xl">
                         <div>
                             <h2 class="text-xl mb-2">Layers</h2>
                             <p class="text-amber-600">
