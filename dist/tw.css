@@ -526,6 +526,10 @@ a {
   margin-bottom: 0.25rem;
 }
 
+.ml-4 {
+  margin-left: 1rem;
+}
+
 .inline-block {
   display: inline-block;
 }
@@ -546,6 +550,12 @@ a {
   height: 100%;
 }
 
+.h-max {
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+}
+
 .h-4 {
   height: 1rem;
 }
@@ -554,34 +564,8 @@ a {
   height: 0.25rem;
 }
 
-.h-max {
-  height: -webkit-max-content;
-  height: -moz-max-content;
-  height: max-content;
-}
-
 .max-h-\[50vh\] {
   max-height: 50vh;
-}
-
-.max-h-\[max-content\] {
-  max-height: -webkit-max-content;
-  max-height: -moz-max-content;
-  max-height: max-content;
-}
-
-.max-h-max {
-  max-height: -webkit-max-content;
-  max-height: -moz-max-content;
-  max-height: max-content;
-}
-
-.max-h-full {
-  max-height: 100%;
-}
-
-.max-h-\[calc\(100\%-1rem\)\] {
-  max-height: calc(100% - 1rem);
 }
 
 .max-h-\[calc\(100\%-2rem\)\] {
@@ -774,6 +758,16 @@ a {
   line-height: 2.25rem;
 }
 
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem;
@@ -782,11 +776,6 @@ a {
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
-}
-
-.text-2xl {
-  font-size: 1.5rem;
-  line-height: 2rem;
 }
 
 .font-bold {
