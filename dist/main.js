@@ -7,8 +7,8 @@ import reservoirs from "./reservoirs.js";
 // Global variables and helpers
 let chart;
 const updateChart = (data) => {
-  const [forecast, historic] = data;
-  chart = makeChart(chart, forecast, historic);
+  const [prediction, historic] = data;
+  chart = makeChart(chart, prediction, historic);
 };
 const date = "2021-09-08";
 
@@ -28,15 +28,15 @@ const getHeaders = () => {
 const fetchOptions = { method: "GET", headers: getHeaders() };
 
 const loadData = (activeReservoir) => {
-  const urlForecast = new URL(`${baseUrl}forecast`);
+  const urlPrediction = new URL(`${baseUrl}prediction`);
   const urlHistoric = new URL(`${baseUrl}historic`);
-  [urlForecast, urlHistoric].forEach((url) => {
+  [urlPrediction, urlHistoric].forEach((url) => {
     url.searchParams.append("reservoir", activeReservoir);
     url.searchParams.append("date", date);
   });
 
   Promise.all([
-    fetch(urlForecast, fetchOptions).then((resp) => resp.json()),
+    fetch(urlPrediction, fetchOptions).then((resp) => resp.json()),
     fetch(urlHistoric, fetchOptions).then((resp) => resp.json()),
   ]).then((data) => updateChart(data));
 };
@@ -75,7 +75,6 @@ const app = new Vue({
     dams: dams,
     active: dams[0].name,
     levels: dams.reduce((acc, el) => ((acc[el.name] = el.level), acc), {}),
-    futs: dams.reduce((acc, el) => ((acc[el.name] = el.fut), acc), {}),
     checks: checkBoxes,
     lastUpdate: date,
     fc: dams.reduce((acc, el) => ((acc[el.name] = []), acc), {}),
@@ -89,24 +88,6 @@ const app = new Vue({
       return this.dams
         .filter((d) => d.name.toLowerCase().includes(this.searchLow))
         .map((d) => d.name);
-    },
-    dirs: function () {
-      return this.dams.reduce(
-        (acc, el) => (
-          (acc[el.name] = this.futs[el.name] > this.levels[el.name]), acc
-        ),
-        {}
-      );
-    },
-    dirSymbs: function () {
-      return this.dams.reduce(
-        (acc, el) => (
-          (acc[el.name] =
-            this.futs[el.name] > this.levels[el.name] ? "↑" : "↓"),
-          acc
-        ),
-        {}
-      );
     },
   },
   watch: {
@@ -139,25 +120,24 @@ map.touchZoomRotate.disableRotation();
 
 const getAllLevels = () => {
   const latest = (data) => {
-    const [levels, forecasts] = data;
+    const [levels, predictions] = data;
     levels.forEach((el) => {
       const name = el.reservoir;
       app.levels[name] = el.volume;
-      app.futs[name] = el.forecast;
     });
-    forecasts.forEach((el) => {
-      const fc = el.forecast.map((f) => f.y);
+    predictions.forEach((el) => {
+      const fc = el.prediction.map((f) => f.y);
       app.fc[el.reservoir] = fc;
     });
   };
 
   const urlLevels = new URL(`${baseUrl}levels`);
-  const urlForecasts = new URL(`${baseUrl}forecasts`);
-  urlForecasts.searchParams.append("date", app.lastUpdate);
+  const urlPredictions = new URL(`${baseUrl}predictions`);
+  urlPredictions.searchParams.append("date", app.lastUpdate);
 
   Promise.all([
     fetch(urlLevels, fetchOptions).then((resp) => resp.json()),
-    fetch(urlForecasts, fetchOptions).then((resp) => resp.json()),
+    fetch(urlPredictions, fetchOptions).then((resp) => resp.json()),
   ]).then((data) => latest(data));
 };
 

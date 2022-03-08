@@ -12,9 +12,9 @@ const conf = (data, direction) => {
   }));
 };
 
-export const makeChart = (chart, forecast, historic) => {
-  const up = conf(forecast, "up");
-  const down = conf(forecast, "down");
+export const makeChart = (chart, prediction, historic) => {
+  const up = conf(prediction, "up");
+  const down = conf(prediction, "down");
 
   const datasets = [
     {
@@ -42,8 +42,8 @@ export const makeChart = (chart, forecast, historic) => {
       borderWidth: 4,
     },
     {
-      label: "Forecast",
-      data: forecast,
+      label: "Prediction",
+      data: prediction,
       fill: false,
       lineTension: 0.3,
       borderColor: "rgba(240, 171, 0, 1)",
