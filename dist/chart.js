@@ -13,13 +13,14 @@ const conf = (data, direction) => {
 };
 
 export const makeChart = (chart, prediction, historic) => {
-  const up = conf(prediction, "up");
-  const down = conf(prediction, "down");
+  const predParsed = prediction.map((el) => ({ x: el.date, y: el.level }));
+  const up = conf(predParsed, "up");
+  const down = conf(predParsed, "down");
 
   const datasets = [
     {
       label: "Precipitation",
-      data: historic.map((el) => ({ x: el.x, y: el.precip })),
+      data: historic.map((el) => ({ x: el.date, y: el.precip })),
       fill: false,
       lineTension: 0.3,
       borderColor: "rgba(0, 11, 200, 1)",
@@ -32,7 +33,7 @@ export const makeChart = (chart, prediction, historic) => {
     },
     {
       label: "Volume",
-      data: historic.map((el) => ({ x: el.x, y: el.volume })),
+      data: historic.map((el) => ({ x: el.date, y: el.level })),
       fill: true,
       lineTension: 0.3,
       borderColor: "rgba(151, 189, 61, 1)",
@@ -43,7 +44,7 @@ export const makeChart = (chart, prediction, historic) => {
     },
     {
       label: "Prediction",
-      data: prediction,
+      data: predParsed,
       fill: false,
       lineTension: 0.3,
       borderColor: "rgba(240, 171, 0, 1)",

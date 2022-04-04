@@ -126,7 +126,7 @@ const getAllLevels = () => {
       app.levels[name] = el.volume;
     });
     predictions.forEach((el) => {
-      const fc = el.prediction.map((f) => f.y);
+      const fc = el.prediction.map((f) => f.level);
       app.fc[el.reservoir] = fc;
     });
   };
