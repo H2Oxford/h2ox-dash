@@ -119,26 +119,39 @@ map.dragRotate.disable();
 map.touchZoomRotate.disableRotation();
 
 const getAllLevels = () => {
-  const latest = (data) => {
-    const [levels, predictions] = data;
+  const latestLevels = (levels) => {
     levels.forEach((el) => {
       const name = el.reservoir;
       app.levels[name] = el.volume;
     });
-    predictions.forEach((el) => {
-      const fc = el.prediction.map((f) => f.level);
-      app.fc[el.reservoir] = fc;
+  };
+
+  const latestTrend = (res, data) => {
+    const fc = data.map((f) => f.level);
+    app.fc[res] = fc;
+  };
+
+  const loadRes = (reservoirList) => {
+    reservoirList.forEach((res) => {
+      const urlPrediction = new URL(`${baseUrl}prediction`);
+      urlPrediction.searchParams.append("reservoir", res);
+      urlPrediction.searchParams.append("date", app.lastUpdate);
+      fetch(urlPrediction, fetchOptions)
+        .then((resp) => resp.json())
+        .then((data) => latestTrend(res, data));
     });
   };
 
-  const urlLevels = new URL(`${baseUrl}levels`);
-  const urlPredictions = new URL(`${baseUrl}predictions`);
-  urlPredictions.searchParams.append("date", app.lastUpdate);
+  const urlReservoirs = new URL(`${baseUrl}reservoirs`);
+  fetch(urlReservoirs, fetchOptions)
+    .then((resp) => resp.json())
+    .then((data) => loadRes(data));
 
-  Promise.all([
-    fetch(urlLevels, fetchOptions).then((resp) => resp.json()),
-    fetch(urlPredictions, fetchOptions).then((resp) => resp.json()),
-  ]).then((data) => latest(data));
+  const urlLevels = new URL(`${baseUrl}levels`);
+
+  fetch(urlLevels, fetchOptions)
+    .then((resp) => resp.json())
+    .then((data) => latestLevels(data));
 };
 
 const pointer = () => (map.getCanvas().style.cursor = "pointer");
