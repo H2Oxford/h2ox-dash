@@ -8,7 +8,7 @@ import reservoirs from "./reservoirs.js";
 let chart;
 const updateChart = (data) => {
   const [prediction, historic] = data;
-  chart = makeChart(chart, prediction, historic);
+  chart = makeChart(chart, prediction.timeseries, historic.timeseries);
 };
 const date = "2021-09-08";
 
@@ -118,40 +118,34 @@ const map = new mapboxgl.Map({
 map.dragRotate.disable();
 map.touchZoomRotate.disableRotation();
 
-const getAllLevels = () => {
-  const latestLevels = (levels) => {
-    levels.forEach((el) => {
-      const name = el.reservoir;
-      app.levels[name] = el.volume;
-    });
-  };
+const spriteLine = (data) => {
+  const fc = data.timeseries.map((f) => f.level);
+  app.fc[data.reservoir] = fc;
+};
 
-  const latestTrend = (res, data) => {
-    const fc = data.map((f) => f.level);
-    app.fc[res] = fc;
-  };
+const loadRes = (response) => {
+  const includedReservoirs = dams.map((d) => d.name);
+  const reservoirList = response.reservoirs;
+  reservoirList.forEach((res) => {
+    if (includedReservoirs.includes(res.name)) {
+      app.levels[res.name] = res.level.level;
 
-  const loadRes = (reservoirList) => {
-    reservoirList.forEach((res) => {
       const urlPrediction = new URL(`${baseUrl}prediction`);
-      urlPrediction.searchParams.append("reservoir", res);
+      urlPrediction.searchParams.append("reservoir", res.name);
       urlPrediction.searchParams.append("date", app.lastUpdate);
+
       fetch(urlPrediction, fetchOptions)
         .then((resp) => resp.json())
-        .then((data) => latestTrend(res, data));
-    });
-  };
+        .then((resp) => spriteLine(resp));
+    }
+  });
+};
 
+const getAllLevels = () => {
   const urlReservoirs = new URL(`${baseUrl}reservoirs`);
   fetch(urlReservoirs, fetchOptions)
     .then((resp) => resp.json())
     .then((data) => loadRes(data));
-
-  const urlLevels = new URL(`${baseUrl}levels`);
-
-  fetch(urlLevels, fetchOptions)
-    .then((resp) => resp.json())
-    .then((data) => latestLevels(data));
 };
 
 const pointer = () => (map.getCanvas().style.cursor = "pointer");
