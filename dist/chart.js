@@ -19,19 +19,6 @@ export const makeChart = (chart, prediction, historic) => {
 
   const datasets = [
     {
-      label: "Precipitation",
-      data: historic.map((el) => ({ x: el.date, y: el.precip })),
-      fill: false,
-      lineTension: 0.3,
-      borderColor: "rgba(0, 11, 200, 1)",
-      backgroundColor: "rgba(0, 11, 200, 1)",
-      borderCapStyle: "round",
-      pointBorderWidth: 0,
-      borderWidth: 1,
-      radius: 0,
-      yAxisID: "y1",
-    },
-    {
       label: "Volume",
       data: historic.map((el) => ({ x: el.date, y: el.level })),
       fill: true,
