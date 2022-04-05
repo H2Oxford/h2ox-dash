@@ -32,7 +32,6 @@ const loadData = (activeReservoir) => {
   const urlHistoric = new URL(`${baseUrl}historic`);
   [urlPrediction, urlHistoric].forEach((url) => {
     url.searchParams.append("reservoir", activeReservoir);
-    url.searchParams.append("date", date);
   });
 
   Promise.all([
@@ -132,7 +131,6 @@ const loadRes = (response) => {
 
       const urlPrediction = new URL(`${baseUrl}prediction`);
       urlPrediction.searchParams.append("reservoir", res.name);
-      urlPrediction.searchParams.append("date", app.lastUpdate);
 
       fetch(urlPrediction, fetchOptions)
         .then((resp) => resp.json())
