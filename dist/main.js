@@ -13,7 +13,7 @@ const updateChart = (data) => {
 const date = "2021-09-08";
 
 const baseUrl = window.location.href.includes("h2ox")
-  ? "https://h2ox-api-kdjsv6lupq-ez.a.run.app/api/"
+  ? "https://api.h2ox.org/api/"
   : "http://localhost:5111/api/";
 
 const getHeaders = () => {
