@@ -13,14 +13,14 @@ const conf = (data, direction) => {
 };
 
 export const makeChart = (chart, prediction, historic) => {
-  const predParsed = prediction.map((el) => ({ x: el.date, y: el.level }));
+  const predParsed = prediction.map((el) => ({ x: el.date, y: el.value }));
   const up = conf(predParsed, "up");
   const down = conf(predParsed, "down");
 
   const datasets = [
     {
       label: "Volume",
-      data: historic.map((el) => ({ x: el.date, y: el.level })),
+      data: historic.map((el) => ({ x: el.date, y: el.value })),
       fill: true,
       lineTension: 0.3,
       borderColor: "rgba(151, 189, 61, 1)",

@@ -118,7 +118,7 @@ map.dragRotate.disable();
 map.touchZoomRotate.disableRotation();
 
 const spriteLine = (data) => {
-  const fc = data.timeseries.map((f) => f.level);
+  const fc = data.timeseries.map((f) => f.value);
   app.fc[data.reservoir] = fc;
 };
 
@@ -127,7 +127,7 @@ const loadRes = (response) => {
   const reservoirList = response.reservoirs;
   reservoirList.forEach((res) => {
     if (includedReservoirs.includes(res.name)) {
-      app.levels[res.name] = res.level.level;
+      app.levels[res.name] = res.level.value;
 
       const urlPrediction = new URL(`${baseUrl}prediction`);
       urlPrediction.searchParams.append("reservoir", res.name);
