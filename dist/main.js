@@ -110,7 +110,7 @@ mapboxgl.accessToken =
   "pk.eyJ1IjoiY2FyZGVybmUiLCJhIjoiY2puMXN5cnBtNG53NDN2bnhlZ3h4b3RqcCJ9.eNjrtezXwvM7Ho1VSxo06w";
 const map = new mapboxgl.Map({
   container: "map",
-  style: "mapbox://styles/carderne/ckrjgvfbr8auv19nzc3fir8p9?fresh=true",
+  style: "mapbox://styles/carderne/ckrjgvfbr8auv19nzc3fir8p9",
   bounds: [73, 11, 85, 25], // bbox is in order west, south, east, north
   maxBounds: [65, 5, 90, 30],
   minZoom: 4,
