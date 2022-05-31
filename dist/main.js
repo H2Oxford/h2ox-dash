@@ -2,7 +2,6 @@
 
 import { makeChart, trendLineConfig } from "./chart.js";
 import { dams, checkBoxes } from "./data.js";
-import reservoirs from "./reservoirs.js";
 
 // Global variables and helpers
 let chart;
@@ -73,13 +72,16 @@ const app = new Vue({
   data: {
     dams: dams,
     active: dams[0].name,
-    levels: dams.reduce((acc, el) => ((acc[el.name] = el.level), acc), {}),
+    levels: dams.reduce((acc, el) => ((acc[el.name] = el.max / 2), acc), {}),
     checks: checkBoxes,
     lastUpdate: date,
     fc: dams.reduce((acc, el) => ((acc[el.name] = []), acc), {}),
     search: "",
   },
   computed: {
+    activeLabel: function () {
+      return this.dams.filter((d) => d.name === this.active)[0].label;
+    },
     searchLow: function () {
       return this.search.toLowerCase();
     },
@@ -109,9 +111,9 @@ mapboxgl.accessToken =
 const map = new mapboxgl.Map({
   container: "map",
   style: "mapbox://styles/carderne/ckrjgvfbr8auv19nzc3fir8p9?fresh=true",
-  bounds: [73.94, 11.18, 83.35, 14.04], // bbox is in order west, south, east, north
-  maxBounds: [71, 7, 86, 17],
-  minZoom: 5,
+  bounds: [73, 11, 85, 25], // bbox is in order west, south, east, north
+  maxBounds: [65, 5, 90, 30],
+  minZoom: 4,
   maxZoom: 11,
 });
 map.dragRotate.disable();
@@ -156,47 +158,9 @@ const handleClick = (e) => {
 };
 
 map.on("load", () => {
-  map.addSource("res", {
-    type: "geojson",
-    data: reservoirs,
-  });
-  map.addLayer({
-    id: "res",
-    type: "fill",
-    source: "res",
-    paint: {
-      "fill-color": "#0ee1e1",
-      "fill-opacity": 0.9,
-    },
-  });
-  map.addLayer({
-    id: "res-line",
-    type: "line",
-    source: "res",
-    paint: {
-      "line-color": "#4e6af9",
-      "line-width": 2,
-    },
-  });
-  map.addLayer({
-    id: "res-name",
-    type: "symbol",
-    source: "res",
-    layout: {
-      "text-field": "{label}",
-      "text-size": ["interpolate", ["linear"], ["zoom"], 5, 8, 11, 26],
-    },
-    paint: {
-      "text-halo-width": 3,
-      "text-halo-color": "#ccfffc",
-      "text-halo-blur": 3,
-      "text-color": "#000",
-    },
-  });
-
-  map.on("mouseenter", "res", pointer);
-  map.on("mouseleave", "res", nopointer);
-  map.on("click", "res", handleClick);
+  map.on("mouseenter", "res-fill", pointer);
+  map.on("mouseleave", "res-fill", nopointer);
+  map.on("click", "res-fill", handleClick);
   map.on("click", "res-line", handleClick);
   map.on("click", "res-name", handleClick);
 });
