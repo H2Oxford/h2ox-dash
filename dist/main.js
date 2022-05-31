@@ -166,5 +166,5 @@ map.on("load", () => {
 });
 
 // Load data on first load
-loadData(app.active);
 getAllLevels();
+loadData(app.active);
