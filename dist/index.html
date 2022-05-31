@@ -77,8 +77,8 @@
                                 <div>{{ d.label }}</div>
                                 <div class="text-red-700 text-2xl"
                                      :class="{ 'text-green-700': levels[d.name] > d.max * 0.5 }">
-                                    {{ Math.round(100 * levels[d.name] / d.max) }}%
-                                    <span class="text-sm">({{ levels[d.name] }} MMC)</span>
+                                     {{ levels[d.name] > 0 ? Math.round(100 * levels[d.name] / d.max) + "%" : "" }}
+                                     <span class="text-sm">{{ levels[d.name] > 0 ? levels[d.name] + " MMC" : "" }}</span>
                                 </div>
                             </div>
                             <div class="h-10 w-20 ml-auto">

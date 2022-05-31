@@ -9,7 +9,7 @@ const updateChart = (data) => {
   const [prediction, historic] = data;
   chart = makeChart(chart, prediction.timeseries, historic.timeseries);
 };
-const date = "2021-09-08";
+let mapLoaded = false;
 
 const baseUrl = window.location.href.includes("h2ox")
   ? "https://api.h2ox.org/api/"
@@ -66,15 +66,16 @@ Vue.component("Trend", {
   `,
 });
 
+let map;
+
 // Vue app for dam selectors and info
 const app = new Vue({
   el: "#body",
   data: {
     dams: dams,
     active: dams[0].name,
-    levels: dams.reduce((acc, el) => ((acc[el.name] = el.max / 2), acc), {}),
+    levels: dams.reduce((acc, el) => ((acc[el.name] = 0), acc), {}),
     checks: checkBoxes,
-    lastUpdate: date,
     fc: dams.reduce((acc, el) => ((acc[el.name] = []), acc), {}),
     search: "",
   },
@@ -94,6 +95,10 @@ const app = new Vue({
   watch: {
     active: function () {
       loadData(this.active);
+      if (mapLoaded)
+        map.fitBounds(this.dams.filter((d) => d.name === this.active)[0].bbox, {
+          padding: 50,
+        });
     },
   },
   methods: {
@@ -108,7 +113,7 @@ const app = new Vue({
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiY2FyZGVybmUiLCJhIjoiY2puMXN5cnBtNG53NDN2bnhlZ3h4b3RqcCJ9.eNjrtezXwvM7Ho1VSxo06w";
-const map = new mapboxgl.Map({
+map = new mapboxgl.Map({
   container: "map",
   style: "mapbox://styles/carderne/ckrjgvfbr8auv19nzc3fir8p9",
   bounds: [73, 11, 85, 25], // bbox is in order west, south, east, north
@@ -158,6 +163,7 @@ const handleClick = (e) => {
 };
 
 map.on("load", () => {
+  mapLoaded = true;
   map.on("mouseenter", "res-fill", pointer);
   map.on("mouseleave", "res-fill", nopointer);
   map.on("click", "res-fill", handleClick);
